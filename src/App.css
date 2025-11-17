@@ -1,0 +1,77 @@
+/* Xóa bỏ các style mặc định của React */
+.App-logo {
+  display: none;
+}
+.App-link {
+  display: none;
+}
+
+/* Style chính */
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  /* --- PHẦN SỬA --- */
+  /* Bỏ 'background-color' và thay bằng ảnh nền */
+  background-image: url('./assets/lobby_background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Đổi màu chữ mặc định thành TRẮNG */
+  color: white; 
+  /* Thêm bóng đổ cho chữ để nổi bật */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
+}
+
+/* Phần quan trọng: Container cho webcam và canvas */
+.webcam-container {
+  position: relative;
+  width: 640px; /* Cố định kích thước */
+  height: 480px;
+  margin-top: 20px;
+  border: 2px solid #61dafb;
+  border-radius: 8px;
+  overflow: hidden; /* Ẩn phần thừa */
+}
+
+.webcam-video, .webcam-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Lật ngược video (như gương soi) */
+.webcam-video {
+  transform: scaleX(-1);
+}
+
+.webcam-canvas {
+  /* Canvas không cần lật vì nó sẽ vẽ dựa trên tọa độ video đã lật */
+}
+
+.detection-result {
+  margin-top: 20px;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #61dafb; /* Màu xanh của React */
+}
+
+/* Style cho phần Header chung của các trang */
+.App-header {
+  /* Các style này sao chép từ .App để đảm bảo căn giữa */
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Quan trọng */
+
+  /* DÒNG QUAN TRỌNG: Đẩy nội dung xuống 60px để không bị Navbar che */
+  padding-top: 60px; 
+}
