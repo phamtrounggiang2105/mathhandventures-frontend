@@ -9,7 +9,7 @@ const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg'; // Ảnh Minions mới
 
 // (API Helper, Sinh câu hỏi - không đổi)
-const api = axios.create({ baseURL: 'http://mathhandventures-backend.onrender.com/api' });
+const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers['x-auth-token'] = token;

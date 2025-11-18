@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'; // Import navigate
 
 // Helper: Tạo 'instance' của axios
 const api = axios.create({
-  baseURL: 'http://mathhandventures-backend.onrender.com/api',
+  baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
