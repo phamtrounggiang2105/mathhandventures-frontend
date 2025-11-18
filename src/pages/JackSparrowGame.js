@@ -29,7 +29,7 @@ const MILESTONE_COORDS = [
 ];
 
 // (API Helper và Sinh câu hỏi... code này không đổi)
-const api = axios.create({ baseURL: 'http://localhost:5000/api' });
+const api = axios.create({ baseURL: 'http://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers['x-auth-token'] = token;
