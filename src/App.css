@@ -13,20 +13,20 @@
   display: flex;
   flex-direction: column;
   
-  /* --- PHẦN SỬA --- */
-  /* Bỏ 'background-color' và thay bằng ảnh nền */
+  
+  /*  ảnh nền */
   background-image: url('./assets/lobby_background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-  /* Đổi màu chữ mặc định thành TRẮNG */
+  /* Đổi màu  thành TRẮNG */
   color: white; 
   /* Thêm bóng đổ cho chữ để nổi bật */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); 
 }
 
-/* Phần quan trọng: Container cho webcam và canvas */
+/* Container cho webcam và canvas */
 .webcam-container {
   position: relative;
   width: 640px; /* Cố định kích thước */
@@ -45,7 +45,7 @@
   height: 100%;
 }
 
-/* Lật ngược video (như gương soi) */
+/* Lật ngược video  */
 .webcam-video {
   transform: scaleX(-1);
 }
@@ -58,7 +58,7 @@
   margin-top: 20px;
   font-size: 1.5em;
   font-weight: bold;
-  color: #61dafb; /* Màu xanh của React */
+  color: #61dafb; 
 }
 
 /* Style cho phần Header chung của các trang */
@@ -72,6 +72,6 @@
   justify-content: center;
   box-sizing: border-box; /* Quan trọng */
 
-  /* DÒNG QUAN TRỌNG: Đẩy nội dung xuống 60px để không bị Navbar che */
+  /* Đẩy nội dung xuống 60px để không bị Navbar che */
   padding-top: 60px; 
 }

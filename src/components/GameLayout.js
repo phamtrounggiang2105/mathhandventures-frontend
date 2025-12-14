@@ -45,7 +45,7 @@ function GameLayout({ children, onHandDetected }) {
         onHandDetected={onHandDetected}
       />
 
-      {/* 3. Nội dung chính của Game (ở giữa) */}
+      {/* 3. Nội dung chính của Game  */}
       <div style={{
         width: '100%',
         height: '100%',
@@ -53,8 +53,8 @@ function GameLayout({ children, onHandDetected }) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingTop: '60px', // <-- Khoảng đệm 60px
-        boxSizing: 'border-box' // <-- Sửa lỗi layout "vỡ"
+        paddingTop: '60px', // 
+        boxSizing: 'border-box' // 
       }}>
         {children}
       </div>

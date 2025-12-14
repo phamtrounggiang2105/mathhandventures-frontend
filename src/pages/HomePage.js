@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'; 
 
-// --- (KHÔNG IMPORT ẢNH TỪ ASSETS NỮA) ---
 // Thay vào đó, chúng ta sẽ dùng đường dẫn trực tiếp từ public/images/
 
 function HomePage() {
@@ -12,7 +11,7 @@ function HomePage() {
     navigate(path);
   };
 
-  // --- (Style cho từng Module - Vẫn giữ nền trắng, bo tròn) ---
+  // --- Style cho từng Module  ---
   const moduleStyle = {
     display: 'flex',
     flexDirection: 'column', 
@@ -26,7 +25,7 @@ function HomePage() {
     transition: 'transform 0.2s, box-shadow 0.2s', 
   };
 
-  // --- (Style cho ảnh - Chiếm gần hết chiều rộng của ô trắng) ---
+  // --- Style cho ảnh  ---
   const imageStyle = {
     width: '250px', // Kích thước cố định cho ảnh
     height: '250px', 
@@ -34,7 +33,7 @@ function HomePage() {
     objectFit: 'cover',
   };
   
-  // --- (Style cho chữ - Đặt riêng bên ngoài ô module) ---
+  // --- Style cho chữ - Đặt riêng bên ngoài ô module ---
   const textStyle = {
     color: 'white', // Chữ màu trắng (vì nằm trên nền Rayman)
     fontSize: '2em',
@@ -99,7 +98,7 @@ function HomePage() {
                 alt="Game vui"
                 style={imageStyle}
               />
-              {/* CHỮ KHÔNG CÒN Ở ĐÂY NỮA */}
+              {/*  */}
             </div>
             <span style={textStyle}>Game vui</span> {/* <-- CHỮ ĐƯỢC ĐẨY XUỐNG DƯỚI */}
           </div>

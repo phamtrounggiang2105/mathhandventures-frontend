@@ -14,9 +14,9 @@ function Navbar() {
     '/games/jacksparrow'
   ];
 
-  // Nếu đường dẫn hiện tại (location.pathname) nằm trong danh sách gamePaths
+  // Nếu đường dẫn hiện tại location.pathname nằm trong danh sách gamePaths
   if (gamePaths.includes(location.pathname)) {
-    return null; // ... thì không hiển thị gì cả (trả về rỗng)
+    return null; //  thì không hiển thị gì cả (trả về rỗng)
   }
 
 
@@ -28,7 +28,7 @@ function Navbar() {
   }
 
   const handleLogout = () => {
-    // 1. Xóa "vé"
+    // 1. Xóa vé
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     
@@ -36,12 +36,12 @@ function Navbar() {
     navigate('/login');
   };
 
-  // Nếu không có user (ví dụ: ở trang login), không hiển thị gì cả
+  // Nếu không có user , không hiển thị gì cả
   if (!user) {
     return null;
   }
 
-  // --- ĐÂY LÀ PHẦN GIAO DIỆN ĐÃ SỬA ---
+  
   return (
     <div style={{
       width: '100%',

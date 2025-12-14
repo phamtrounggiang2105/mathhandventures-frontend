@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import GameLayout from '../components/GameLayout'; // 1. Import Giao diện "Trong Game"
+import GameLayout from '../components/GameLayout'; // 1. Import Giao diện Trong Game
 import axios from 'axios';
 import '../App.css';
 import { useNavigate } from 'react-router-dom'; // Import navigate
 
-// Helper: Tạo 'instance' của axios
+// Helper: Tạo instance của axios
 const api = axios.create({
   baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
@@ -14,9 +14,9 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// --- (Phần 1: Logic sinh câu hỏi - ĐÃ SỬA) ---
+// --- Phần 1: Logic sinh câu hỏi ---
 
-// Nhóm 1: Động vật (Bạn có thể thêm/bớt emoji tùy ý)
+// Nhóm 1: Động vật 
 const ANIMALS = [
   { emoji: '🐶', type: 'con vật' },
   { emoji: '🐱', type: 'con vật' },
@@ -30,7 +30,7 @@ const ANIMALS = [
   { emoji: '🦁', type: 'con vật' }
 ];
 
-// Nhóm 2: Trái cây (Bạn có thể thêm/bớt emoji tùy ý)
+// Nhóm 2: Trái cây 
 const FRUITS = [
   { emoji: '🍎', type: 'trái cây' },
   { emoji: '🍌', type: 'trái cây' },
@@ -47,7 +47,7 @@ const generateQuestion = () => {
   let category; // Nhóm được chọn
   let chosenItem; // Vật phẩm được chọn
   
-  // 2. Chọn ngẫu nhiên nhóm (Trái cây hoặc Động vật)
+  // 2. Chọn ngẫu nhiên nhóm Trái cây hoặc Động vật
   if (Math.random() < 0.5) {
     category = FRUITS;
     // Chọn ngẫu nhiên 1 trái cây
@@ -59,12 +59,12 @@ const generateQuestion = () => {
   }
   
   // 3. Lấy emoji và loại câu hỏi
-  const { emoji, type } = chosenItem; // type sẽ là 'trái cây' hoặc 'con vật'
+  const { emoji, type } = chosenItem; // type sẽ là trái cây hoặc con vật
   
-  // 4. Tạo chuỗi emoji (ví dụ: "🍎🍎🍎")
+  // 4. Tạo chuỗi emoji 
   const questionEmojis = Array(answer).fill(emoji); 
   
-  // 5. Tạo văn bản câu hỏi (ví dụ: "Có bao nhiêu trái cây...")
+  // 5. Tạo văn bản câu hỏi 
   const questionText = `Có bao nhiêu ${type} trên màn hình?`;
   
   return { text: questionText, emojis: questionEmojis, answer: answer };
@@ -82,7 +82,7 @@ function CountingGame() {
 
   // --- (Phần 2: Xử lý game) ---
   
-  // Khi nhấn "Sẵn sàng"
+  // Khi nhấn Sẵn sàng
   const handleStartGame = () => {
     setGameStarted(true);
     setQuestionCount(1);
@@ -119,13 +119,13 @@ function CountingGame() {
       setFeedback(`Sai rồi! Đáp án đúng là ${currentQuestion.answer}.`);
     }
 
-    // Kiểm tra kết thúc game (20 câu)
+    // Kiểm tra kết thúc game 
     if (questionCount === 20) {
       const finalScore = isCorrect ? currentScore + 50 : currentScore;
       setTimeout(() => {
         alert(`Hoàn thành! Tổng điểm: ${finalScore}.`);
         saveGame(finalScore);
-        setGameStarted(false); // Quay về màn hình "Sẵn sàng"
+        setGameStarted(false); // Quay về màn hình Sẵn sàng
         setIsAnswering(false);
       }, 2000);
     } else {
@@ -139,10 +139,10 @@ function CountingGame() {
   }, [currentQuestion, questionCount, currentScore, gameStarted, isAnswering]); 
 
 
-  // --- (Phần 3: Giao diện - ĐÃ SỬA LỖI) ---
+  // --- Phần 3: Giao diện ---
   
   if (!gameStarted) {
-    // Màn hình "Sẵn sàng"
+    // Màn hình Sẵn sàng
     return (
       <div className="App">
         <header className="App-header">
@@ -167,7 +167,7 @@ function CountingGame() {
     );
   }
 
-  // Màn hình "Trong Game"
+  // Màn hình trong Game
   return (
     <GameLayout onHandDetected={handleAnswer}>
       
@@ -188,7 +188,7 @@ function CountingGame() {
           {/* 1. Hiển thị câu hỏi động */}
           <h3 style={{fontSize: '2em', marginTop: 0}}>{currentQuestion.text}</h3>
           
-          {/* 2. Hiển thị Emoji (với CSS Grid) */}
+          {/* 2. Hiển thị Emoji ) */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(5, auto)',
@@ -224,6 +224,3 @@ function CountingGame() {
 
 export default CountingGame;
   
-  
-
-

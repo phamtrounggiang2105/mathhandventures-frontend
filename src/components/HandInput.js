@@ -27,7 +27,7 @@ const countFingers = (keypoints, handedness) => {
   return count;
 };
 
-// --- (Phần 2: Component chính) ---
+// --- Phần 2: Component chính ---
 function HandInput({ onHandDetected, isSmall = false }) {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);

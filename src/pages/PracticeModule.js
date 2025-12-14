@@ -4,11 +4,11 @@ import axios from 'axios';
 import '../App.css'; 
 import HandInput from '../components/HandInput'; 
 
-// --- (TÊN FILE NỀN & ẢNH THẮNG) ---
+// --- TÊN FILE NỀN & ẢNH THẮNG ---
 const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
-const VICTORY_IMAGE_URL = '/images/victory_minions.jpg'; // Ảnh Minions mới
+const VICTORY_IMAGE_URL = '/images/victory_minions.jpg'; // Ảnh Minions
 
-// (API Helper, Sinh câu hỏi - không đổi)
+// API Helper, Sinh câu hỏi 
 const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -36,12 +36,12 @@ const generateQuestion = () => {
   return { text: questionText, answer: answer };
 };
 
-// --- (COMPONENT CHÍNH) ---
+// --- COMPONENT CHÍNH ---
 function PracticeModule() {
   const navigate = useNavigate();
   
-  // --- (YÊU CẦU MỚI) Thay đổi State ---
-  // 'lobby' = Sẵn sàng, 'playing' = Đang chơi, 'ended' = Hiện điểm
+  // --- Thay đổi State ---
+  
   const [gameState, setGameState] = useState('lobby'); 
   const [finalScore, setFinalScore] = useState(0); // Lưu điểm cuối
   
@@ -53,7 +53,7 @@ function PracticeModule() {
 
   // (Code logic game)
   const handleStartGame = () => {
-    setGameState('playing'); // Chuyển sang "Đang chơi"
+    setGameState('playing'); // Chuyển sang Đang chơi
     setQuestionCount(1);
     setCurrentScore(0);
     setFeedback('');
@@ -67,7 +67,7 @@ function PracticeModule() {
     } catch (err) { console.error('Lỗi khi lưu điểm:', err); }
   };
   
-  // --- (YÊU CẦU MỚI) Sửa handleAnswer để hiện màn hình Thắng ---
+  // --- Sửa handleAnswer để hiện màn hình Thắng ---
   const handleAnswer = useCallback((detectedNumber) => {
     if (isAnswering || gameState !== 'playing') return; 
     setIsAnswering(true);
@@ -84,13 +84,11 @@ function PracticeModule() {
       const finalScoreValue = isCorrect ? currentScore + 50 : currentScore;
       
       setTimeout(() => {
-        // --- (THAY ĐỔI) ---
-        // alert(`Hoàn thành! Tổng điểm: ${finalScoreValue}.`); (Xóa alert)
+        // Hoàn thành! 
         saveGame(finalScoreValue);
         setFinalScore(finalScoreValue); // Lưu điểm cuối
-        setGameState('ended'); // Chuyển sang màn hình "Kết thúc"
+        setGameState('ended'); // Chuyển sang màn hình Kết thúc
         setIsAnswering(false);
-        // --- (KẾT THÚC THAY ĐỔI) ---
       }, 2000);
     } else {
       setTimeout(() => {
@@ -101,9 +99,9 @@ function PracticeModule() {
     }
   }, [currentQuestion, questionCount, currentScore, gameState, isAnswering]); // Thêm gameState
 
-  // --- (GIAO DIỆN) ---
+  // --- GIAO DIỆN ---
   
-  // 1. Màn hình "Sẵn sàng" (Lobby)
+  // 1. Màn hình Sẵn sàng Lobby
   if (gameState === 'lobby') {
     return (
       <div className="App">
@@ -130,9 +128,8 @@ function PracticeModule() {
   }
 
   // 2. Màn hình "Trong Game" (Playing) hoặc "Kết thúc" (Ended)
-  // (Cả hai đều dùng chung nền khung gỗ)
   return (
-    // Div Nền (Full-screen)
+    // Div Nền
     <div style={{
       width: '100vw',
       height: '100vh',
@@ -171,7 +168,7 @@ function PracticeModule() {
         />
       )}
 
-      {/* --- (YÊU CẦU MỚI) Nội dung thay đổi theo gameState --- */}
+      {/* ---  Nội dung thay đổi theo gameState --- */}
       
       {/* 2a. Nếu đang chơi (Playing) */}
       {gameState === 'playing' && (
@@ -201,7 +198,7 @@ function PracticeModule() {
         </>
       )}
 
-      {/* 2b. Nếu đã kết thúc (Ended) - Màn hình Chúc mừng */}
+      {/* 2b. Nếu đã kết thúc Ended - Màn hình Chúc mừng */}
       {gameState === 'ended' && (
         <>
           <h1 style={{ fontSize: '3em', margin: 0 }}>

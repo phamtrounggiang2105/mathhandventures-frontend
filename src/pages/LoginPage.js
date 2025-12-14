@@ -21,29 +21,29 @@ function LoginPage() {
       const response = await axios.post('https://mathhandventures-backend.onrender.com/api/users/login', userToLogin);
 
       // 2. Xử lý thành công
-      // Backend (GĐ 2) trả về một đối tượng có 'token' và 'user'
+      // Backend (GĐ 2) trả về một đối tượng có token và user
       const { token, user } = response.data;
 
       // 3. LƯU TOKEN VÀO BỘ NHỚ TRÌNH DUYỆT (LocalStorage)
       // Đây là bước quan trọng nhất
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user)); // Lưu thông tin user (id, username, role)
+      localStorage.setItem('user', JSON.stringify(user)); // Lưu thông tin user 
 
       alert('Đăng nhập thành công!');
 
       // 4. Chuyển hướng người dùng
-      // Nếu là admin thì về trang admin, nếu là student thì về trang chủ (game)
+      // Nếu là admin thì về trang admin, nếu là student thì về trang chủ game
       if (user.role === 'admin') {
         navigate('/admin');
       } else {
-        navigate('/'); // Chuyển về trang chủ (webcam)
+        navigate('/'); // Chuyển về trang chủ webcam
       }
 
     } catch (err) {
-      // 5. Xử lý lỗi (ví dụ: sai mật khẩu)
+      // 5. Xử lý lỗi 
       console.error(err);
       if (err.response && err.response.data && err.response.data.msg) {
-        alert('Lỗi: ' + err.response.data.msg); // (ví dụ: "Tên đăng nhập hoặc mật khẩu không đúng")
+        alert('Lỗi: ' + err.response.data.msg); // Tên đăng nhập hoặc mật khẩu không đúng
       } else {
         alert('Đã xảy ra lỗi. Vui lòng thử lại.');
       }

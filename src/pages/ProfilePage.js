@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'; 
 
-// --- (Phần 1: API Helper) ---
+// --- Phần 1: API Helper ---
 const api = axios.create({
   baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
@@ -20,14 +20,14 @@ api.interceptors.request.use(
   }
 );
 
-// --- (Phần 2: Danh sách Avatars) ---
+// --- Phần 2: Danh sách Avatars ---
 const avatarList = [];
 for (let i = 1; i <= 17; i++) {
   const number = i < 10 ? '0' + i : i;
   avatarList.push(`avatar${number}.jpg`);
 }
 
-// (Style cho nút Cập nhật)
+// Style cho nút Cập nhật
 const buttonStyle = {
   padding: '10px 20px', 
   background: '#0d47a1', // Màu xanh đậm
@@ -73,10 +73,10 @@ function ProfilePage() {
     };
 
     fetchHistory();
-  }, [currentUser]); // Chỉ chạy khi 'currentUser' đã được tải
+  }, [currentUser]); // Chỉ chạy khi currentUser đã được tải
 
 
-  // --- (Phần 3: Hàm xử lý Avatar) ---
+  // --- Phần 3: Hàm xử lý Avatar ---
   const handleUpdateAvatar = async (e) => {
     e.preventDefault();
     try {
@@ -98,7 +98,7 @@ function ProfilePage() {
     );
   }
 
-  // --- (Phần 4: Giao diện - ĐÃ CẬP NHẬT) ---
+  // --- Phần 4: Giao diện  ---
   return (
     // Div ngoài cùng DÙNG LẠI NỀN XANH
     <div className="App"> 

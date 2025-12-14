@@ -6,7 +6,7 @@ const AdminRoute = () => {
   const token = localStorage.getItem('token');
   const userString = localStorage.getItem('user');
   
-  // 2. Phân tích thông tin user (đã lưu lúc đăng nhập)
+  // 2. Phân tích thông tin user (đã lưu lúc đăng nhập
   let user = null;
   if (userString) {
     user = JSON.parse(userString);
@@ -19,7 +19,7 @@ const AdminRoute = () => {
   }
 
   if (user.role !== 'admin') {
-    // Nếu có token, nhưng KHÔNG PHẢI admin -> "Đá" về trang chủ (webcam)
+    // Nếu có token, nhưng KHÔNG PHẢI admin ->  về trang chủ (webcam)
     return <Navigate to="/" replace />;
   }
 

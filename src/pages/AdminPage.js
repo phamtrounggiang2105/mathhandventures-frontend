@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../App.css'; 
 
-// Import Chart.js (Đầy đủ)
+// Import Chart.js 
 import { Pie, Line, Bar } from 'react-chartjs-2'; 
 import { 
   Chart as ChartJS, 
@@ -16,7 +16,7 @@ import {
   BarElement 
 } from 'chart.js';
 
-// Đăng ký các thành phần (Đầy đủ)
+// Đăng ký các thành phần 
 ChartJS.register(
   ArcElement, Tooltip, Legend, 
   CategoryScale, LinearScale, PointElement, LineElement,
@@ -24,7 +24,7 @@ ChartJS.register(
 );
 // ---
 
-// --- (Phần 1: API Helper - Không đổi) ---
+// --- Phần 1: API Helper  ---
 const api = axios.create({
   baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
@@ -41,7 +41,7 @@ api.interceptors.request.use(
   }
 );
 
-// --- (Phần 2: Component Biểu đồ Tròn) ---
+// --- Phần 2: Component Biểu đồ Tròn ---
 const PopularityChart = ({ chartData }) => {
   const data = {
     labels: chartData.map(item => item._id), 
@@ -67,7 +67,7 @@ const PopularityChart = ({ chartData }) => {
   return <Pie data={data} options={options} />;
 };
 
-// --- (Phần 3: Component Biểu đồ Đường) ---
+// --- Phần 3: Component Biểu đồ Đường ---
 const ActivityChart = ({ chartData }) => {
   const data = {
     labels: chartData.map(item => item._id),
@@ -91,7 +91,7 @@ const ActivityChart = ({ chartData }) => {
   return <Line data={data} options={options} />;
 };
 
-// --- (Component Biểu đồ Cột) ---
+// --- Component Biểu đồ Cột ---
 const AverageScoreChart = ({ chartData }) => {
   const data = {
     labels: chartData.map(item => item._id), 
@@ -123,7 +123,7 @@ const AverageScoreChart = ({ chartData }) => {
 };
 
 
-// --- (Phần 4: Component Trang Admin chính) ---
+// --- Phần 4: Component Trang Admin chính ---
 function AdminPage() {
   const [users, setUsers] = useState([]);
   const [stats, setStats] = useState({ totalUsers: 0, totalGamesPlayed: 0 });
@@ -141,7 +141,7 @@ function AdminPage() {
   const [selectedStudentName, setSelectedStudentName] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // --- (Phần 5: Hàm tải dữ liệu) ---
+  // --- Phần 5: Hàm tải dữ liệu ---
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -187,7 +187,7 @@ function AdminPage() {
     }
   };
   
-  // --- (YÊU CẦU MỚI) Hàm xem lịch sử ---
+  // --- Hàm xem lịch sử ---
   const handleViewHistory = async (userId, username) => {
     try {
       setLoadingHistory(true);
@@ -207,7 +207,7 @@ function AdminPage() {
   };
 
 
-  // --- (Phần 6: Giao diện - ĐẦY ĐỦ) ---
+  // --- Phần 6: Giao diện  ---
   if (loading) {
     return (
       <div className="App"><header className="App-header"><p>Đang tải dữ liệu Admin...</p></header></div>
@@ -330,7 +330,7 @@ function AdminPage() {
         </div>
       </header>
 
-      {/* --- (MODAL MỚI) --- */}
+      {/* --- MODAL MỚI --- */}
       {showHistoryModal && (
         <div style={{
           position: 'fixed', top: 0, left: 0,

@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router-dom';
 // Ảnh nền Sảnh chờ MỚI
 import JackSparrowLobbyBackground from '../assets/jack_lobby_background.png'; 
 
-// --- (TÊN FILE CỦA BẠN) ---
+// --- TÊN FILE ---
 const MAP_IMAGE_URL = '/game_assets/Bando_moi_nhat.jpg';
 const PLAYER_IMAGE_URL = '/game_assets/thuyentruong.png';
 const VICTORY_IMAGE_URL = '/game_assets/thuyentruongberuongkhobau.png';
 
-const PLAYER_WIDTH = 50; // Chốt 50px
+const PLAYER_WIDTH = 50; 
 
-// --- (11 TỌA ĐỘ CUỐI CÙNG - V4) ---
+// --- 11 TỌA ĐỘ  ---
 const MILESTONE_COORDS = [
   { x: 220, y: 183 }, // Mốc 1
   { x: 168, y: 266 }, // Mốc 2
@@ -28,7 +28,7 @@ const MILESTONE_COORDS = [
   { x: 466, y: 145 }, // Rương Vàng
 ];
 
-// (API Helper và Sinh câu hỏi... code này không đổi)
+// API Helper và Sinh câu hỏi
 const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -70,7 +70,7 @@ const generateNewQuestion = () => {
   return Math.random() < 0.5 ? generateMathQuestion() : generateCountingQuestion();
 };
 
-// --- (COMPONENT CHÍNH) ---
+// --- COMPONENT CHÍNH ---
 function JackSparrowGame() {
   const navigate = useNavigate();
   const [gameState, setGameState] = useState('lobby'); 
@@ -194,9 +194,9 @@ function JackSparrowGame() {
     }
   }, [currentQuestion, questionsAnswered, currentMilestoneIndex, gameState, isAnswering, mapSize.width]);
 
-  // --- (GIAO DIỆN) ---
+  // --- GIAO DIỆN ---
   
-  // --- (SỬA LẠI THEO YÊU CẦU MỚI) Màn hình Sảnh chờ ---
+  // --- Màn hình Sảnh chờ ---
   if (gameState === 'lobby') {
     return (
       // Div ngoài cùng
@@ -204,7 +204,7 @@ function JackSparrowGame() {
           backgroundImage: `url(${JackSparrowLobbyBackground})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          height: '100vh', // <-- SỬA LỖI TRÀN
+          height: '100vh', 
           width: '100vw',
           display: 'flex',
           flexDirection: 'column',
@@ -302,7 +302,7 @@ function JackSparrowGame() {
           }}
         />
         
-        {/* --- Bong bóng "Bắt đầu" --- */}
+        {/* --- Bong bóng Bắt đầu --- */}
         {showStartMessage && (
           <div style={{
             position: 'absolute',

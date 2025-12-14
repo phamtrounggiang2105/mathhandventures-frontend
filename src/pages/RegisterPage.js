@@ -22,12 +22,12 @@ function RegisterPage() {
     const newUser = {
       username: username,
       password: password,
-      // (Chúng ta không cần gửi 'role', vì backend tự động đặt là 'student')
+      //  không cần gửi 'role', vì backend tự động đặt là student
     };
 
     try {
       // 3. Gọi API backend
-      // Gửi yêu cầu POST đến backend (Giai đoạn 2)
+      // Gửi yêu cầu POST đến backend 
       await axios.post('https://mathhandventures-backend.onrender.com/api/users/register', newUser);
 
       // 4. Xử lý thành công
@@ -36,8 +36,7 @@ function RegisterPage() {
 
     } catch (err) {
       // 5. Xử lý lỗi
-      // 'err.response.data.msg' là tin nhắn lỗi từ backend
-      // (ví dụ: "Tên đăng nhập đã tồn tại")
+      
       console.error(err);
       if (err.response && err.response.data && err.response.data.msg) {
         alert('Lỗi: ' + err.response.data.msg);
