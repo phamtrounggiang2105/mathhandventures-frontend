@@ -4,12 +4,9 @@ import axios from 'axios';
 import '../App.css';
 import HandInput from '../components/HandInput';
 
-
 // --- 1. Cấu hình tài nguyên & API ---
-// Đảm bảo file ảnh này tồn tại trong public/images/
 const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
-
 
 const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
@@ -18,12 +15,11 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-
 // --- 2. Dữ liệu và Logic sinh câu hỏi ---
 const ANIMALS = [
   { emoji: '🐶', type: 'con vật' }, { emoji: '🐱', type: 'con vật' },
   { emoji: '🐭', type: 'con vật' }, { emoji: '🐰', type: 'con vật' },
-  { emoji: '🦊', type: 'con vật' }, { emoji: '🐻', type: 'con vật' },
+  { emoji: 'FOX', emoji: '🦊', type: 'con vật' }, { emoji: '🐻', type: 'con vật' },
   { emoji: '🐼', type: 'con vật' }, { emoji: '🐨', type: 'con vật' },
   { emoji: '🐯', type: 'con vật' }, { emoji: '🦁', type: 'con vật' }
 ];
@@ -32,7 +28,6 @@ const FRUITS = [
   { emoji: '🍊', type: 'trái cây' }, { emoji: '🍇', type: 'trái cây' },
   { emoji: '🍓', type: 'trái cây' }, { emoji: '🍉', type: 'trái cây' }
 ];
-
 
 const generateQuestion = () => {
   const answer = Math.floor(Math.random() * 10) + 1;
@@ -45,30 +40,26 @@ const generateQuestion = () => {
   };
 };
 
-
-// --- 3. Component Chính ---
 function CountingGame() {
   const navigate = useNavigate();
-  const [gameState, setGameState] = useState('lobby'); // lobby, playing, ended
-  const [timeLeft, setTimeLeft] = useState(120); // 120 giây
+  const [gameState, setGameState] = useState('lobby'); 
+  const [timeLeft, setTimeLeft] = useState(120); 
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [currentScore, setCurrentScore] = useState(0);
   const [questionCount, setQuestionCount] = useState(1);
   const [feedback, setFeedback] = useState('');
   const [isAnswering, setIsAnswering] = useState(false);
 
-
-  // --- 4. Xử lý thời gian (Đồng bộ với Học toán) ---
+  // --- 4. Xử lý thời gian (Sửa lỗi truyền currentScore) ---
   useEffect(() => {
     let timer;
     if (gameState === 'playing' && timeLeft > 0) {
       timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
     } else if (timeLeft === 0 && gameState === 'playing') {
-      handleFinishGame();
+      handleFinishGame(currentScore); // Truyền điểm số hiện tại khi hết giờ
     }
     return () => clearInterval(timer);
-  }, [gameState, timeLeft]);
-
+  }, [gameState, timeLeft, currentScore]);
 
   const handleStartGame = () => {
     setGameState('playing');
@@ -80,37 +71,39 @@ function CountingGame() {
     setCurrentQuestion(generateQuestion());
   };
 
-
   const saveGameResult = async (finalScore) => {
     try {
       await api.post('/game/save', { gameType: 'Đếm số', score: finalScore });
+      console.log("Đã lưu điểm Đếm số thành công:", finalScore);
     } catch (err) { console.error('Lỗi khi lưu điểm:', err); }
   };
 
-
-  const handleFinishGame = () => {
-    saveGameResult(currentScore);
+  // CẬP NHẬT: Nhận điểm số trực tiếp để lưu chính xác
+  const handleFinishGame = (finalScore) => {
+    saveGameResult(finalScore);
     setGameState('ended');
     setIsAnswering(false);
   };
 
-
   const handleAnswer = useCallback((detectedNumber) => {
     if (isAnswering || gameState !== 'playing') return;
     setIsAnswering(true);
+    
     const isCorrect = (detectedNumber === currentQuestion.answer);
-
+    // TÍNH TOÁN ĐIỂM MỚI NGAY LẬP TỨC
+    const newScore = isCorrect ? currentScore + 1 : currentScore;
 
     if (isCorrect) {
       setFeedback('Đúng rồi! +1 điểm');
-      setCurrentScore(prev => prev + 1);
+      setCurrentScore(newScore);
     } else {
       setFeedback(`Sai rồi! Đáp án đúng là ${currentQuestion.answer}.`);
     }
 
-
     if (questionCount === 10) {
-      setTimeout(() => handleFinishGame(), 2000);
+      setTimeout(() => {
+        handleFinishGame(newScore); // Gửi điểm số mới nhất đã tính toán
+      }, 2000);
     } else {
       setTimeout(() => {
         setQuestionCount(prev => prev + 1);
@@ -121,8 +114,7 @@ function CountingGame() {
     }
   }, [currentQuestion, questionCount, currentScore, gameState, isAnswering]);
 
-
-  // --- 5. Giao diện (Lobby) ---
+  // --- Giao diện giữ nguyên các style của bạn ---
   if (gameState === 'lobby') {
     return (
       <div className="App">
@@ -136,8 +128,6 @@ function CountingGame() {
     );
   }
 
-
-  // --- 6. Giao diện Trong Game ---
   return (
     <div style={{
       backgroundImage: `url('${BACKGROUND_IMAGE_URL}')`,
@@ -146,11 +136,8 @@ function CountingGame() {
       display: 'flex', flexDirection: 'column', alignItems: 'center',
       paddingTop: '10vh', color: '#3E352F'
     }}>
-      {/* Nút Thoát */}
       <button onClick={() => setGameState('lobby')} style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: '#ff4d4d', color: 'white', border: 'none', borderRadius: '5px', padding: '10px 15px', fontWeight: 'bold', cursor: 'pointer', zIndex: 201 }}>Thoát</button>
 
-
-      {/* Đồng hồ đếm ngược */}
       <div style={{
         position: 'absolute', top: '20px', left: '20px',
         backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '10px 25px', borderRadius: '20px',
@@ -159,25 +146,13 @@ function CountingGame() {
         ⏳ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
       </div>
 
-
-      {/* Webcam AI */}
-      {gameState === 'playing' && (
-        <HandInput isSmall={true} onHandDetected={handleAnswer} />
-      )}
-
+      {gameState === 'playing' && <HandInput isSmall={true} onHandDetected={handleAnswer} />}
 
       {gameState === 'playing' && (
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <h2 style={{ fontSize: '2em', marginBottom: '10px' }}>Câu {questionCount}/10</h2>
           {currentQuestion && (
-         
-            <div style={{
-              padding: '20px 40px',
-              borderRadius: '25px',
-              textAlign: 'center',
-              margin: '5px auto',
-              boxShadow: '0 10px 20px rgba(0,0,0,0.2)' // Giữ lại bóng đổ nhẹ cho đẹp
-            }}>
+            <div style={{ padding: '20px 40px', borderRadius: '25px', textAlign: 'center', margin: '5px auto', boxShadow: '0 10px 20px rgba(0,0,0,0.2)' }}>
               <h3 style={{fontSize: '2.5em', marginTop: 0}}>{currentQuestion.text}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, auto)', justifyContent: 'center', gap: '15px', fontSize: '6em' }}>
                 {currentQuestion.emojis.map((emoji, index) => <span key={index}>{emoji}</span>)}
@@ -191,7 +166,6 @@ function CountingGame() {
         </div>
       )}
 
-
       {gameState === 'ended' && (
         <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '40px', borderRadius: '30px', textAlign: 'center', marginTop: '5vh', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
           <h1 style={{ fontSize: '3.5em', margin: '0' }}>{timeLeft === 0 ? 'HẾT GIỜ!' : 'HOÀN THÀNH!'}</h1>
@@ -204,6 +178,4 @@ function CountingGame() {
   );
 }
 
-
 export default CountingGame;
-
