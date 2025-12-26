@@ -19,7 +19,6 @@ function Navbar() {
     return null; //  thì không hiển thị gì cả (trả về rỗng)
   }
 
-
   // Lấy thông tin user từ Local Storage
   const userString = localStorage.getItem('user');
   let user = null;
@@ -41,7 +40,6 @@ function Navbar() {
     return null;
   }
 
-  
   return (
     <div style={{
       width: '100%',
@@ -67,6 +65,18 @@ function Navbar() {
         )}
         
         <Link to="/profile" style={{ color: '#61dafb', textDecoration: 'none' }}>Trang cá nhân</Link>
+
+        {/* --- MỤC THÊM MỚI: Về chúng tôi (Giới thiệu tác giả) --- */}
+        <Link 
+          to="/about" 
+          style={{ 
+            color: '#FFD700', // Màu vàng nổi bật để giảng viên dễ chú ý
+            textDecoration: 'none',
+            fontWeight: 'bold' 
+          }}
+        >
+          Về chúng tôi
+        </Link>
       </div>
       
       {/* 2. AVATAR VÀ MENU (BÊN PHẢI) */}
