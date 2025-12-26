@@ -38,7 +38,7 @@ function HomePage() {
       alignItems: 'center',
       justifyContent: 'flex-start', // Căn từ trên xuống
       overflow: 'hidden',
-      paddingTop: '260px' 
+      paddingTop: '80px' 
     }}>
       {/* Đã xóa bỏ cụm từ MATHANDVENTURES ở đây */}
 
@@ -49,7 +49,8 @@ function HomePage() {
         justifyContent: 'center', 
         alignItems: 'center',
         width: '100%',
-        padding: '0 20px'
+        padding: '0 20px',
+        marginTop: '50px'
       }}>
         {gameButtons.map((game, index) => (
           <button
