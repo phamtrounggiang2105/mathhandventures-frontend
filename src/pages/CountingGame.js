@@ -155,9 +155,12 @@ function CountingGame() {
           <h2 style={{ fontSize: '2em', marginBottom: '10px' }}>Câu {questionCount}/10</h2>
           {currentQuestion && (
             <div style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.7)', padding: '20px 40px',
-              borderRadius: '25px', border: '4px solid #4CAF50',
-              textAlign: 'center', margin: '20px auto', boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
+              backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+              padding: '20px 40px',
+              borderRadius: '25px',
+              textAlign: 'center', 
+              margin: '20px auto', 
+              boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
             }}>
               <h3 style={{fontSize: '2.5em', marginTop: 0}}>{currentQuestion.text}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, auto)', justifyContent: 'center', gap: '15px', fontSize: '6em' }}>
