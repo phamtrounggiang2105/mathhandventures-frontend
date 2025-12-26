@@ -38,7 +38,7 @@ function HomePage() {
       alignItems: 'center',
       justifyContent: 'flex-start', // Căn từ trên xuống
       overflow: 'hidden',
-      paddingTop: '120px' 
+      paddingTop: '80px' 
     }}>
       {/* Đã xóa bỏ cụm từ MATHANDVENTURES ở đây */}
 
