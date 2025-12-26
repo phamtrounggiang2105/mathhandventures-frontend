@@ -1,31 +1,30 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
-// Đảm bảo file lobby_background.png nằm trong thư mục src/assets/
 import LobbyBackground from '../assets/lobby_background.png';
 
 function HomePage() {
   const navigate = useNavigate();
 
-  // Danh sách 3 ứng dụng chính dàn hàng ngang
+  // Danh sách 3 ứng dụng chính với đường dẫn ảnh từ thư mục public/images
   const gameButtons = [
     { 
       title: 'Học toán', 
       path: '/practice', 
       color: '#4CAF50', 
-      icon: '➕➖' 
+      img: '/images/Module_hoctap.png' 
     },
     { 
       title: 'Đếm số', 
       path: '/games/counting', 
       color: '#2196F3', 
-      icon: '🍎🐶' 
+      img: '/images/module_game.png' 
     },
     { 
       title: 'Tìm kho báu', 
       path: '/games/jacksparrow', 
       color: '#FF9800', 
-      icon: '🏴‍☠️' 
+      img: '/images/game_kho_bau.png' 
     }
   ];
 
@@ -43,18 +42,18 @@ function HomePage() {
       overflow: 'hidden'
     }}>
       <h1 style={{ 
-        fontSize: '4.5em', 
+        fontSize: '4em', 
         color: 'white', 
         textShadow: '4px 4px 8px rgba(0,0,0,0.7)', 
-        marginBottom: '60px',
+        marginBottom: '40px',
         fontFamily: 'Arial, sans-serif'
       }}>
-        MATHHANDVENTURES
+        
       </h1>
 
       <div style={{ 
         display: 'flex', 
-        gap: '40px', 
+        gap: '30px', 
         justifyContent: 'center', 
         alignItems: 'center',
         width: '100%',
@@ -65,39 +64,48 @@ function HomePage() {
             key={index}
             onClick={() => navigate(game.path)}
             style={{
-              width: '280px',
-              height: '350px',
+              width: '240px', // Đã thu nhỏ (từ 280px)
+              height: '320px', // Đã thu nhỏ (từ 350px)
               backgroundColor: game.color,
               color: 'white',
-              border: '8px solid white',
-              borderRadius: '30px',
+              border: '6px solid white',
+              borderRadius: '25px',
               cursor: 'pointer',
-              fontSize: '2.2em',
+              fontSize: '1.8em',
               fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               transition: 'all 0.3s ease',
-              boxShadow: '0 15px 25px rgba(0,0,0,0.4)',
-              outline: 'none'
+              boxShadow: '0 12px 20px rgba(0,0,0,0.4)',
+              outline: 'none',
+              padding: '10px'
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'scale(1.08)';
-              e.currentTarget.style.boxShadow = '0 20px 35px rgba(0,0,0,0.5)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 15px 25px rgba(0,0,0,0.4)';
+              e.currentTarget.style.boxShadow = '0 12px 20px rgba(0,0,0,0.4)';
             }}
           >
-            <span style={{ 
-              fontSize: '2.5em', 
-              marginBottom: '20px',
-              filter: 'drop-shadow(2px 2px 2px rgba(0,0,0,0.3))'
-            }}>
-              {game.icon}
-            </span>
+            {/* Hiển thị ảnh module thay cho icon */}
+            <img 
+              src={game.img} 
+              alt={game.title}
+              style={{
+                width: '80%',
+                height: 'auto',
+                marginBottom: '15px',
+                borderRadius: '10px',
+                objectFit: 'contain'
+              }}
+              // Nếu ảnh bị lỗi đường dẫn, hiện icon mặc định
+              onError={(e) => { e.target.style.display = 'none'; }}
+            />
+            
             <div style={{ textAlign: 'center' }}>
               {game.title}
             </div>
