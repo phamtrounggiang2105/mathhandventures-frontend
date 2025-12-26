@@ -6,10 +6,10 @@ function GamesLobby() {
   const navigate = useNavigate();
   
   return (
-    // Thêm position: relative để định vị nút
+    // relative để định vị nút
     <div className="App" style={{ position: 'relative' }}> 
       
-      {/* --- NÚT "QUAY LẠI" (MÀU ĐỎ) --- */}
+      {/* NÚT QUAY LẠI */}
       <button
         onClick={() => navigate('/')} // Quay về Sảnh chờ chính 
         style={{

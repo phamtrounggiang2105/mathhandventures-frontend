@@ -51,8 +51,8 @@ function LoginPage() {
   };
 
   return (
-    <div className="App"> {/* Dùng chung style nền tối */}
-      <header className="App-header"> {/* Dùng chung style căn giữa */}
+    <div className="App"> 
+      <header className="App-header"> 
         <h1>Đăng nhập</h1>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px', minWidth: '300px' }}>
           <input

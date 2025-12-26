@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import AdminRoute from './components/AdminRoute';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// --- 2. Import các Trang (Pages) ---
+// --- 2. Import các Trang  ---
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -26,11 +26,11 @@ function App() {
       <Navbar />
 
       <Routes>
-        {/* --- A. Các trang công khai (Public) --- */}
+        {/* --- A. Các trang công khai  --- */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
 
-        {/* --- B. Các trang được bảo vệ (Chỉ dành cho người dùng đã đăng nhập) --- */}
+        {/* --- B. Các trang được bảo vệ  --- */}
         <Route element={<ProtectedRoute />}>
           {/* Trang chủ sau khi đăng nhập */}
           <Route path="/" element={<HomePage />} />
@@ -38,7 +38,7 @@ function App() {
           {/* Trang hồ sơ cá nhân của người chơi */}
           <Route path="/profile" element={<ProfilePage />} />
           
-          {/* TRANG MỚI: Giới thiệu tác giả (Giang & Bình) và Giảng viên hướng dẫn */}
+          {/* Giới thiệu tác giả và Giảng viên hướng dẫn */}
           <Route path="/about" element={<AboutUs />} />
 
           {/* CÁC TRANG CHỨC NĂNG VÀ TRÒ CHƠI */}
@@ -48,13 +48,12 @@ function App() {
           <Route path="/games/jacksparrow" element={<JackSparrowGame />} />
         </Route>
 
-        {/* --- C. Các trang chỉ dành riêng cho Quản trị viên (Admin) --- */}
         <Route element={<AdminRoute />}>
           <Route path="/admin" element={<AdminPage />} />
         </Route>
 
-        {/* --- D. Xử lý đường dẫn không hợp lệ --- */}
-        {/* Nếu người dùng gõ URL lạ, hệ thống tự động quay về trang chủ */}
+      
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

@@ -6,7 +6,7 @@ function Navbar() {
   const location = useLocation(); // Hook để lấy URL hiện tại
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Đây là tất cả các trang mà Navbar cần PHẢI ẨN
+  // các trang mà Navbar cần PHẢI ẨN
   const gamePaths = [
     '/practice',
     '/games',
@@ -16,7 +16,7 @@ function Navbar() {
 
   // Nếu đường dẫn hiện tại location.pathname nằm trong danh sách gamePaths
   if (gamePaths.includes(location.pathname)) {
-    return null; //  thì không hiển thị gì cả (trả về rỗng)
+    return null; //  thì không hiển thị gì cả trả về rỗng
   }
 
   // Lấy thông tin user từ Local Storage
@@ -66,11 +66,11 @@ function Navbar() {
         
         <Link to="/profile" style={{ color: '#61dafb', textDecoration: 'none' }}>Trang cá nhân</Link>
 
-        {/* --- MỤC THÊM MỚI: Về chúng tôi (Giới thiệu tác giả) --- */}
+        {/* Về chúng tôi  */}
         <Link 
           to="/about" 
           style={{ 
-            color: '#FFD700', // Màu vàng nổi bật để giảng viên dễ chú ý
+            color: '#FFD700', 
             textDecoration: 'none',
             fontWeight: 'bold' 
           }}
@@ -79,10 +79,10 @@ function Navbar() {
         </Link>
       </div>
       
-      {/* 2. AVATAR VÀ MENU (BÊN PHẢI) */}
+      {/* 2. AVATAR VÀ MENU  */}
       <div style={{ position: 'relative' }}>
         
-        {/* Avatar (Nút bấm) */}
+        {/* Avatar  */}
         <img
           src={`/avatars/${user.avatar}`}
           alt="Avatar"
@@ -96,7 +96,7 @@ function Navbar() {
           }}
         />
         
-        {/* Menu Đăng xuất (Chỉ hiện khi isMenuOpen = true) */}
+        {/* Menu Đăng xuất  */}
         {isMenuOpen && (
           <div style={{
             position: 'absolute',

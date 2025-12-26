@@ -135,13 +135,13 @@ function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- (YÊU CẦU MỚI) State cho Modal Lịch sử ---
+  //  State cho Modal Lịch sử 
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [selectedStudentHistory, setSelectedStudentHistory] = useState([]);
   const [selectedStudentName, setSelectedStudentName] = useState('');
   const [loadingHistory, setLoadingHistory] = useState(false);
 
-  // --- Phần 5: Hàm tải dữ liệu ---
+  // Phần 5: Hàm tải dữ liệu 
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -194,7 +194,7 @@ function AdminPage() {
       setShowHistoryModal(true); // Mở Modal
       setSelectedStudentName(username); // Đặt tên
       
-      // Gọi API mới (GET /api/game/history/:userId)
+      // Gọi API mới 
       const res = await api.get(`/game/history/${userId}`);
       setSelectedStudentHistory(res.data); // Lưu lịch sử
       
@@ -207,7 +207,7 @@ function AdminPage() {
   };
 
 
-  // --- Phần 6: Giao diện  ---
+  //  Phần 6: Giao diện 
   if (loading) {
     return (
       <div className="App"><header className="App-header"><p>Đang tải dữ liệu Admin...</p></header></div>
@@ -273,7 +273,7 @@ function AdminPage() {
           </div>
         </div>
         
-        {/* --- Khung Biểu đồ Đường --- */}
+        {/* Khung Biểu đồ Đường */}
         <h2 style={{marginTop: '40px'}}>Hoạt động 7 ngày qua</h2>
         <div style={{
           width: '80%', maxWidth: '700px', 
@@ -288,7 +288,7 @@ function AdminPage() {
         </div>
 
 
-        {/* --- Khung Quản lý User (ĐÃ THÊM NÚT "XEM") --- */}
+        {/* Khung Quản lý Users*/}
         <h2 style={{marginTop: '40px'}}>Quản lý học sinh</h2>
         <div style={{
           width: '80%', maxWidth: '700px', height: '300px',
@@ -309,7 +309,6 @@ function AdminPage() {
                   <strong>{user.username}</strong>
                 </div>
                 
-                {/* --- (NÚT MỚI) --- */}
                 <div style={{display: 'flex', gap: '10px'}}>
                   <button 
                     onClick={() => handleViewHistory(user._id, user.username)}
@@ -330,7 +329,7 @@ function AdminPage() {
         </div>
       </header>
 
-      {/* --- MODAL MỚI --- */}
+      {/* MODAL MỚI */}
       {showHistoryModal && (
         <div style={{
           position: 'fixed', top: 0, left: 0,

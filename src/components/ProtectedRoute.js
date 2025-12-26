@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  // 3. Nếu RỒI, cho phép họ xem nội dung (trang game, trang admin...)
+  // 3. Nếu RỒI, cho phép họ xem nội dung 
   
   return <Outlet />;
 };

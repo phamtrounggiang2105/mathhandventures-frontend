@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../App.css'; 
 
-// --- Phần 1: API Helper ---
+//  Phần 1: API Helper 
 const api = axios.create({
   baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
@@ -20,7 +20,7 @@ api.interceptors.request.use(
   }
 );
 
-// --- Phần 2: Danh sách Avatars ---
+// Phần 2: Danh sách Avatars 
 const avatarList = [];
 for (let i = 1; i <= 17; i++) {
   const number = i < 10 ? '0' + i : i;
@@ -51,7 +51,7 @@ function ProfilePage() {
   // State cho Avatar
   const [selectedAvatar, setSelectedAvatar] = useState(currentUser?.avatar || 'avatar01.jpg');
   
-  // --- (YÊU CẦU MỚI) State để lưu Lịch sử chơi ---
+  // State để lưu Lịch sử chơi 
   const [gameHistory, setGameHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(true);
 
@@ -62,7 +62,7 @@ function ProfilePage() {
       
       try {
         setHistoryLoading(true);
-        // Gọi API (GET /api/game/history) - API này tự biết là user nào
+        // Gọi API  - API này tự biết là user nào
         const res = await api.get('/game/history');
         setGameHistory(res.data); // Lưu mảng kết quả
       } catch (err) {
@@ -76,7 +76,7 @@ function ProfilePage() {
   }, [currentUser]); // Chỉ chạy khi currentUser đã được tải
 
 
-  // --- Phần 3: Hàm xử lý Avatar ---
+  // Phần 3: Hàm xử lý Avatar 
   const handleUpdateAvatar = async (e) => {
     e.preventDefault();
     try {
@@ -98,14 +98,14 @@ function ProfilePage() {
     );
   }
 
-  // --- Phần 4: Giao diện  ---
+  //  Phần 4: Giao diện 
   return (
-    // Div ngoài cùng DÙNG LẠI NỀN XANH
+    // Div ngoài cùng 
     <div className="App"> 
       <header className="App-header">
         <h1>Trang cá nhân</h1>
         
-        {/* Phần Avatar (Layout 2 cột) */}
+        {/* Phần Avatar */}
         <div style={{ 
           display: 'flex', 
           flexDirection: 'row', 
@@ -113,13 +113,12 @@ function ProfilePage() {
           alignItems: 'flex-start', 
           marginBottom: '30px', 
           padding: '20px', 
-          backgroundColor: 'rgba(255,255,255,0.3)', // Nền trắng mờ
+          backgroundColor: 'rgba(255,255,255,0.3)', 
           borderRadius: '10px',
-          color: '#282c34', // Chữ đen
-          textShadow: 'none' // Tắt bóng đổ
+          color: '#282c34', 
+          textShadow: 'none' 
         }}>
           
-          {/* Cột 1: Thông tin cá nhân */}
           <div style={{textAlign: 'center'}}>
             <p>Avatar hiện tại:</p>
             <img 
@@ -131,7 +130,6 @@ function ProfilePage() {
             <p>Vai trò: <i>{currentUser.role}</i></p>
           </div>
           
-          {/* Cột 2: Form chọn avatar mới */}
           <form onSubmit={handleUpdateAvatar} style={{ width: '100%', maxWidth: '500px', textAlign: 'left' }}>
               <p>Chọn avatar mới:</p>
               <div style={{
@@ -165,7 +163,6 @@ function ProfilePage() {
 
         <hr style={{width: '80%', borderColor: 'rgba(255,255,255,0.3)'}} />
 
-        {/* --- (YÊU CẦU MỚI) Khung Lịch sử chơi --- */}
         <h2>Lịch sử chơi</h2>
         <div style={{
           width: '80%',
@@ -191,8 +188,8 @@ function ProfilePage() {
                 backgroundColor: 'rgba(255,255,255,0.7)',
                 borderRadius: '5px',
                 marginBottom: '10px',
-                color: '#282c34', // Chữ đen
-                textShadow: 'none' // Bỏ bóng đổ
+                color: '#282c34', 
+                textShadow: 'none' 
               }}>
                 <span>
                   <strong>{result.gameType}</strong> - 
@@ -200,7 +197,6 @@ function ProfilePage() {
                   {new Date(result.createdAt).toLocaleString('vi-VN')}
                 </span>
                 
-                {/* HIỂN THỊ ĐIỂM HOẶC HUY HIỆU KÈM ẢNH */}
                 {result.gameType === 'Jack Sparrow' ? (
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <img 

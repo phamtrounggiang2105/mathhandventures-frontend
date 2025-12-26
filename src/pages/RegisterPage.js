@@ -22,7 +22,7 @@ function RegisterPage() {
     const newUser = {
       username: username,
       password: password,
-      //  không cần gửi 'role', vì backend tự động đặt là student
+      //  không cần gửi role, backend tự động đặt là student
     };
 
     try {

@@ -4,7 +4,7 @@ import axios from 'axios';
 import '../App.css';
 import HandInput from '../components/HandInput';
 
-// --- 1. Cấu hình tài nguyên & API ---
+// 1. Cấu hình tài nguyên & API 
 const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
 
@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// --- 2. Dữ liệu và Logic sinh câu hỏi ---
+// 2. Dữ liệu và Logic sinh câu hỏi 
 const ANIMALS = [
   { emoji: '🐶', type: 'con vật' }, { emoji: '🐱', type: 'con vật' },
   { emoji: '🐭', type: 'con vật' }, { emoji: '🐰', type: 'con vật' },
@@ -114,7 +114,7 @@ function CountingGame() {
     }
   }, [currentQuestion, questionCount, currentScore, gameState, isAnswering]);
 
-  // --- Giao diện giữ nguyên các style của bạn ---
+  // Giao diện giữ nguyên các style của bạn 
   if (gameState === 'lobby') {
     return (
       <div className="App">

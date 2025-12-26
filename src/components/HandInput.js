@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import * as S from '@tensorflow/tfjs'; // Import với tên 'S'
+import * as S from '@tensorflow/tfjs'; 
 import * as handPoseDetection from '@tensorflow-models/hand-pose-detection';
 import drawHand from '../utilities'; // (File này đã có từ GĐ 1)
 
-// --- (Phần 1: Logic đếm ngón tay - đã cập nhật) ---
+// Phần 1: Logic đếm ngón tay 
 const countFingers = (keypoints, handedness) => {
   let count = 0;
   const FINGER_TIPS = [8, 12, 16, 20]; // Ngón trỏ, giữa, áp út, út
@@ -27,7 +27,7 @@ const countFingers = (keypoints, handedness) => {
   return count;
 };
 
-// --- Phần 2: Component chính ---
+// Phần 2: Component chính 
 function HandInput({ onHandDetected, isSmall = false }) {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -78,8 +78,6 @@ function HandInput({ onHandDetected, isSmall = false }) {
   // 3. Hàm nhận diện (chạy liên tục)
   const detectHands = useCallback(async () => {
     
-    // --- (SỬA LỖI GETCONTEXT Ở ĐÂY) ---
-    // Thêm !canvasRef.current
     if (!model || !webcamRef.current || !canvasRef.current || webcamRef.current.readyState !== 4) {
       return; 
     }
@@ -139,7 +137,7 @@ function HandInput({ onHandDetected, isSmall = false }) {
   }, [model, detectHands]);
 
 
-  // --- (Phần 3: Giao diện) ---
+  // Phần 3: Giao diện
   const containerStyle = isSmall ? {
     // Facecam
     position: 'absolute',

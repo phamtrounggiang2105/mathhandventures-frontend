@@ -40,7 +40,6 @@ function HomePage() {
       overflow: 'hidden',
       paddingTop: '60px' 
     }}>
-      {/* Đã xóa bỏ cụm từ MATHANDVENTURES ở đây */}
 
       {/* Container chứa 3 ứng dụng */}
       <div style={{ 
@@ -75,7 +74,6 @@ function HomePage() {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            {/* Ảnh đại diện cho ứng dụng - Lấy từ public/images */}
             <img 
               src={game.img} 
               alt={game.title}

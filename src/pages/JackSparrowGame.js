@@ -5,7 +5,7 @@ import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import JackSparrowLobbyBackground from '../assets/jack_lobby_background.png'; 
 
-// --- 1. Cấu hình tài nguyên ---
+// 1. Cấu hình tài nguyên
 const MAP_IMAGE_URL = '/game_assets/Bando_moi_nhat.jpg';
 const TREASURE_BADGE_URL = '/Huy_hieu/Huy_hieu_kho_bau.png'; 
 const VICTORY_IMAGE_URL = '/game_assets/thuyentruongberuongkhobau.png';
@@ -37,7 +37,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// --- 2. Logic Sinh câu hỏi ---
+// 2. Logic Sinh câu hỏi
 const ANIMALS = [{ emoji: '🐶', type: 'con vật' },{ emoji: '🐱', type: 'con vật' },{ emoji: '🐭', type: 'con vật' },{ emoji: '🐰', type: 'con vật' }];
 const FRUITS = [{ emoji: '🍎', type: 'trái cây' },{ emoji: '🍌', type: 'trái cây' },{ emoji: '🍊', type: 'trái cây' },{ emoji: '🍇', type: 'trái cây' }];
 
@@ -122,7 +122,7 @@ function JackSparrowGame() {
 
   const handleExitToMainLobby = () => navigate('/'); 
 
-  // --- CẬP NHẬT: Hàm lưu kết quả có kèm ảnh Huy hiệu ---
+  // CẬP NHẬT: Hàm lưu kết quả có kèm ảnh Huy hiệu 
   const saveGameResult = async () => {
     try {
       await api.post('/game/save', { 
@@ -137,7 +137,7 @@ function JackSparrowGame() {
     }
   };
 
-  const handleAnswer = useCallback(async (detectedNumber) => { // Thêm async ở đây
+  const handleAnswer = useCallback(async (detectedNumber) => { // Thêm async 
     if (isAnswering || gameState !== 'playing' || !currentQuestion) return; 
     setIsAnswering(true);
     const isCorrect = (detectedNumber === currentQuestion.answer);
@@ -155,7 +155,7 @@ function JackSparrowGame() {
           nextIdx = 10;
           setJackPosition({ x: MILESTONE_COORDS[10].x * ratio, y: MILESTONE_COORDS[10].y * ratio });
           
-          // GỌI HÀM LƯU TẠI ĐÂY
+          // GỌI HÀM LƯU 
           await saveGameResult(); 
           
           setTimeout(() => setGameState('won'), 2000);
@@ -188,7 +188,7 @@ function JackSparrowGame() {
     }
   }, [currentQuestion, questionsAnswered, currentMilestoneIndex, gameState, isAnswering, mapSize.width]);
 
-  // --- GIAO DIỆN (Giữ nguyên phần render của bạn) ---
+  //  GIAO DIỆN 
   if (gameState === 'lobby') {
     return (
       <div style={{
