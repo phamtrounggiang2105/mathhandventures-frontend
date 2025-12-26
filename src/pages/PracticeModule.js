@@ -149,7 +149,7 @@ function PracticeModule() {
     return (
       <div className="App">
         <header className="App-header">
-          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '80px' }}>
+          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '100px' }}>
             <button 
               onClick={() => handleStartGame(1)} 
               style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}
