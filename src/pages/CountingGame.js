@@ -114,7 +114,6 @@ function CountingGame() {
     return (
       <div className="App">
         <header className="App-header">
-          <p>Đếm đúng 10 câu trong 2 phút. Sẵn sàng chưa?</p>
           <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '50px' }}>
             <button onClick={handleStartGame} style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#4CAF50', color: 'white', borderRadius: '15px', cursor: 'pointer', border: 'none' }}>Sẵn sàng</button>
             <button onClick={() => navigate('/')} style={{ padding: '10px', backgroundColor: '#f43307ff', color: 'white', borderRadius: '10px', cursor: 'pointer', border: 'none' }}>Quay lại sảnh chính</button>
@@ -154,12 +153,12 @@ function CountingGame() {
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <h2 style={{ fontSize: '2em', marginBottom: '10px' }}>Câu {questionCount}/10</h2>
           {currentQuestion && (
-            // --- KHUNG CHỨA CÂU HỎI (Đã bỏ viền) ---
+          
             <div style={{
               padding: '20px 40px',
               borderRadius: '25px',
               textAlign: 'center',
-              margin: '20px auto',
+              margin: '5px auto',
               boxShadow: '0 10px 20px rgba(0,0,0,0.2)' // Giữ lại bóng đổ nhẹ cho đẹp
             }}>
               <h3 style={{fontSize: '2.5em', marginTop: 0}}>{currentQuestion.text}</h3>
