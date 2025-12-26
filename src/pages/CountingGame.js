@@ -4,7 +4,10 @@ import axios from 'axios';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 
-// --- 1. Cấu hình API ---
+// --- 1. Cấu hình tài nguyên & API ---
+const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
+const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
+
 const api = axios.create({
   baseURL: 'https://mathhandventures-backend.onrender.com/api',
 });
@@ -18,7 +21,7 @@ api.interceptors.request.use((config) => {
 const ANIMALS = [
   { emoji: '🐶', type: 'con vật' }, { emoji: '🐱', type: 'con vật' },
   { emoji: '🐭', type: 'con vật' }, { emoji: '🐰', type: 'con vật' },
-  { emoji: '🦊', type: 'con vật' }, { emoji: ' BEAR ', type: 'con vật' },
+  { emoji: '🦊', type: 'con vật' }, { emoji: '🐻', type: 'con vật' },
   { emoji: '🐼', type: 'con vật' }, { emoji: '🐨', type: 'con vật' },
   { emoji: '🐯', type: 'con vật' }, { emoji: '🦁', type: 'con vật' }
 ];
@@ -45,7 +48,6 @@ const generateQuestion = () => {
 function CountingGame() {
   const navigate = useNavigate();
   
-  const [gameStarted, setGameStarted] = useState(false);
   const [gameState, setGameState] = useState('lobby'); // lobby, playing, ended
   const [timeLeft, setTimeLeft] = useState(120); // 120 giây = 2 phút
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -57,18 +59,17 @@ function CountingGame() {
   // --- 4. Xử lý thời gian (Countdown) ---
   useEffect(() => {
     let timer;
-    if (gameStarted && gameState === 'playing' && timeLeft > 0) {
+    if (gameState === 'playing' && timeLeft > 0) {
       timer = setInterval(() => {
         setTimeLeft((prev) => prev - 1);
       }, 1000);
-    } else if (timeLeft === 0 && gameStarted) {
-      handleFinishGame();
+    } else if (timeLeft === 0 && gameState === 'playing') {
+      handleFinishGame(); // Hết giờ thì dừng game
     }
     return () => clearInterval(timer);
-  }, [gameStarted, gameState, timeLeft]);
+  }, [gameState, timeLeft]);
 
   const handleStartGame = () => {
-    setGameStarted(true);
     setGameState('playing');
     setQuestionCount(1);
     setCurrentScore(0);
@@ -96,7 +97,7 @@ function CountingGame() {
   };
 
   const handleAnswer = useCallback((detectedNumber) => {
-    if (isAnswering || !gameStarted || gameState !== 'playing') return; 
+    if (isAnswering || gameState !== 'playing') return; 
     
     setIsAnswering(true);
     const isCorrect = (detectedNumber === currentQuestion.answer);
@@ -108,6 +109,7 @@ function CountingGame() {
       setFeedback(`Sai rồi! Đáp án đúng là ${currentQuestion.answer}.`);
     }
 
+    // Kết thúc sau 10 câu
     if (questionCount === 10) {
       setTimeout(() => {
         handleFinishGame();
@@ -120,29 +122,27 @@ function CountingGame() {
         setFeedback('');
       }, 2000);
     }
-  }, [currentQuestion, questionCount, currentScore, gameStarted, isAnswering, gameState]); 
+  }, [currentQuestion, questionCount, currentScore, isAnswering, gameState]); 
 
-  // --- 5. Giao diện ---
+  // --- 5. Giao diện (Rendering) ---
 
   // Màn hình chờ (Lobby)
-  if (!gameStarted || gameState === 'lobby') {
+  if (gameState === 'lobby') {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Game Đếm Số</h1>
-          <p>Bạn có 2 phút để đếm chính xác 10 câu hỏi. Sẵn sàng chưa?</p>
           <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '40px' }}>
             <button 
               onClick={handleStartGame}
               style={{ padding: '20px 60px', fontSize: '1.5em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}
             >
-              Bắt đầu đếm
+              Sẵn sàng
             </button>
             <button 
               onClick={() => navigate('/')} 
               style={{ padding: '15px', backgroundColor: '#f44336', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', fontSize: '1.2em' }}
             >
-              Quay lại sảnh chính
+              Quay về Sảnh chờ
             </button>
           </div>
         </header>
@@ -150,19 +150,23 @@ function CountingGame() {
     );
   }
 
-  // Màn hình trong Game và Kết quả
+  // Màn hình trong Game và Kết quả (Đã áp dụng background đồng bộ)
   return (
     <div style={{ 
-      backgroundImage: "url('/images/practice_background.jpg')", 
+      backgroundImage: `url('${BACKGROUND_IMAGE_URL}')`, 
       backgroundSize: 'cover', 
       backgroundPosition: 'center',
       height: '100vh', 
       width: '100vw',
-      position: 'relative'
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      color: '#3E352F'
     }}>
       {/* Nút Thoát */}
       <button
-        onClick={() => setGameStarted(false)}
+        onClick={() => setGameState('lobby')}
         style={{
           position: 'absolute', top: '20px', right: '20px',
           backgroundColor: '#ff4d4d', color: 'white',
@@ -173,7 +177,7 @@ function CountingGame() {
         Thoát
       </button>
 
-      {/* Đồng hồ đếm ngược */}
+      {/* Đồng hồ đếm ngược (Đồng bộ style với Học toán) */}
       <div style={{
         position: 'absolute', top: '20px', left: '20px',
         backgroundColor: 'rgba(255, 255, 255, 0.9)',
@@ -187,45 +191,43 @@ function CountingGame() {
 
       <GameLayout onHandDetected={handleAnswer}>
         {gameState === 'playing' ? (
-          <>
-            <h1 style={{ fontSize: '3em', color: '#282c34', margin: '10px 0' }}>Câu hỏi {questionCount}/10</h1>
+          <div style={{ marginTop: '5vh', textAlign: 'center' }}>
+            <h1 style={{ fontSize: '2.5em', margin: '0' }}>Câu hỏi {questionCount}/10</h1>
             
             {currentQuestion && (
               <div style={{
-                backgroundColor: 'rgba(14, 85, 227, 0.85)', 
-                color: 'white', 
+                backgroundColor: 'rgba(255, 255, 255, 0.7)', 
+                color: '#282c34', 
                 padding: '30px',
-                borderRadius: '20px',
-                border: '4px solid #3f75c5ff',
+                borderRadius: '25px',
+                border: '4px solid #4CAF50',
                 textAlign: 'center',
-                maxWidth: '85%',
+                maxWidth: '900px',
                 margin: '20px auto',
-                boxShadow: '0 10px 20px rgba(0,0,0,0.3)'
+                boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
               }}>
-                <h3 style={{fontSize: '2.2em', marginTop: 0}}>{currentQuestion.text}</h3>
+                <h3 style={{fontSize: '2.5em', marginTop: 0}}>{currentQuestion.text}</h3>
                 <div style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(5, auto)',
                   justifyContent: 'center',
-                  gap: '15px',
-                  fontSize: '5.5em', 
+                  gap: '10px',
+                  fontSize: '6em', 
                 }}>
                   {currentQuestion.emojis.map((emoji, index) => (
-                    <span key={index} style={{ filter: 'drop-shadow(2px 4px 6px rgba(0,0,0,0.2))' }}>{emoji}</span>
+                    <span key={index}>{emoji}</span>
                   ))}
                 </div>
               </div>
             )}
             
-            <h2 style={{ fontSize: '2.5em', color: '#c4169eff', backgroundColor: 'rgba(255,255,255,0.7)', padding: '5px 20px', borderRadius: '15px' }}>
-              Điểm số: {currentScore}
-            </h2>
+            <h2 style={{ fontSize: '2.5em' }}>Điểm số: {currentScore}</h2>
             
-            <div style={{ height: '50px' }}>
+            <div style={{ height: '60px' }}>
               {feedback && (
                 <h3 style={{ 
                     fontSize: '2em', 
-                    color: feedback.includes('Đúng') ? 'green' : '#d32f2f',
+                    color: feedback.includes('Đúng') ? 'green' : 'red',
                     backgroundColor: 'rgba(255,255,255,0.8)',
                     padding: '5px 20px',
                     borderRadius: '10px'
@@ -234,19 +236,19 @@ function CountingGame() {
                 </h3>
               )}
             </div>
-          </>
+          </div>
         ) : (
           /* Màn hình kết thúc */
           <div style={{
             backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '40px',
-            borderRadius: '30px', textAlign: 'center', marginTop: '5vh',
+            borderRadius: '30px', textAlign: 'center', marginTop: '10vh',
             boxShadow: '0 10px 30px rgba(0,0,0,0.3)'
           }}>
             <h1 style={{ fontSize: '3.5em', margin: '0 0 10px 0' }}>{timeLeft === 0 ? 'HẾT GIỜ!' : 'HOÀN THÀNH!'}</h1>
-            <img src="/images/victory_minions.jpg" alt="Victory" style={{ width: '280px', borderRadius: '20px', margin: '15px' }} />
-            <h2 style={{ fontSize: '3em' }}>Kết quả: {currentScore}/10 điểm</h2>
+            <img src={VICTORY_IMAGE_URL} alt="Victory" style={{ width: '280px', borderRadius: '20px', margin: '15px' }} />
+            <h2 style={{ fontSize: '3em' }}>Tổng điểm: {currentScore}/10</h2>
             <button 
-              onClick={() => { setGameStarted(false); setGameState('lobby'); }} 
+              onClick={() => setGameState('lobby')} 
               style={{ padding: '15px 50px', fontSize: '1.5em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}
             >
               Chơi lại
