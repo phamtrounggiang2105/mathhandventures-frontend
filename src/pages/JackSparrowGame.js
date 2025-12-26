@@ -16,7 +16,6 @@ const CHARACTERS = [
   { id: 'lucfi', name: 'Luffy', img: '/nhan_vat_game/lucfi.png' },
   { id: 'cam_ba_kiem', name: 'Zoro', img: '/nhan_vat_game/cam_ba_kiem.png' },
   { id: 'songoku', name: 'Songoku', img: '/nhan_vat_game/songoku.png' },
-  { id: 'ngo_khong', name: 'Ngộ Không', img: '/nhan_vat_game/ngo_khong.png' },
   { id: 'pikachu', name: 'Pikachu', img: '/nhan_vat_game/pikachu.png' },
   { id: 'doraemon', name: 'Doraemon', img: '/nhan_vat_game/doraemon.png' },
   { id: 'tuan_loc', name: 'Tuần Lộc', img: '/nhan_vat_game/Tuan_loc.png' },
