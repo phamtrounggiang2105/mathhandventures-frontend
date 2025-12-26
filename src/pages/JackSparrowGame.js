@@ -5,46 +5,49 @@ import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import JackSparrowLobbyBackground from '../assets/jack_lobby_background.png'; 
 
-// --- (TÊN FILE CỦA BẠN) ---
+// --- 1. Cấu hình tài nguyên ---
 const MAP_IMAGE_URL = '/game_assets/Bando_moi_nhat.jpg';
-const PLAYER_IMAGE_URL = '/game_assets/thuyentruong.png';
+const TREASURE_BADGE_URL = '/Huy_hieu/Huy_hieu_kho_bau.png'; // Huy hiệu mới bổ sung
 const VICTORY_IMAGE_URL = '/game_assets/thuyentruongberuongkhobau.png';
 
-const PLAYER_WIDTH = 50; // Chốt 50px
+const PLAYER_WIDTH = 50; 
 
-// --- (11 TỌA ĐỘ CUỐI CÙNG - V4) ---
-const MILESTONE_COORDS = [
-  { x: 220, y: 183 }, // Mốc 1
-  { x: 168, y: 266 }, // Mốc 2
-  { x: 414, y: 290 }, // Mốc 3
-  { x: 230, y: 418 }, // Mốc 4
-  { x: 343, y: 460 }, // Mốc 5 - CHECKPOINT
-  { x: 576, y: 455 }, // Mốc 6
-  { x: 701, y: 318 }, // Mốc 7
-  { x: 638, y: 278 }, // Mốc 8
-  { x: 613, y: 172 }, // Mốc 9
-  { x: 617, y: 56 },  // Mốc 10
-  { x: 466, y: 145 }, // Rương Vàng
+// Danh sách nhân vật (Bổ sung theo Mục 4)
+const CHARACTERS = [
+  { id: 'lucfi', name: 'Luffy', img: '/nhan_vat_game/lucfi.png' },
+  { id: 'cam_ba_kiem', name: 'Zoro', img: '/nhan_vat_game/cam_ba_kiem.png' },
+  { id: 'songoku', name: 'Songoku', img: '/nhan_vat_game/songoku.png' },
+  { id: 'ngo_khong', name: 'Ngộ Không', img: '/nhan_vat_game/ngo_khong.png' },
+  { id: 'pikachu', name: 'Pikachu', img: '/nhan_vat_game/pikachu.png' },
+  { id: 'doraemon', name: 'Doraemon', img: '/nhan_vat_game/doraemon.png' },
+  { id: 'tuan_loc', name: 'Tuần Lộc', img: '/nhan_vat_game/tuan%20loc.png' },
 ];
 
-// (API Helper và Sinh câu hỏi... code này không đổi)
+const MILESTONE_COORDS = [
+  { x: 220, y: 183 }, { x: 168, y: 266 }, { x: 414, y: 290 }, 
+  { x: 230, y: 418 }, { x: 343, y: 460 }, { x: 576, y: 455 }, 
+  { x: 701, y: 318 }, { x: 638, y: 278 }, { x: 613, y: 172 }, 
+  { x: 617, y: 56 },  { x: 466, y: 145 },
+];
+
+// --- 2. Logic API & Sinh câu hỏi (GIỮ NGUYÊN 100% LOGIC CỦA BẠN) ---
 const api = axios.create({ baseURL: 'http://localhost:5000/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers['x-auth-token'] = token;
   return config;
 });
+
 const ANIMALS = [{ emoji: '🐶', type: 'con vật' },{ emoji: '🐱', type: 'con vật' },{ emoji: '🐭', type: 'con vật' },{ emoji: '🐰', type: 'con vật' }];
 const FRUITS = [{ emoji: '🍎', type: 'trái cây' },{ emoji: '🍌', type: 'trái cây' },{ emoji: '🍊', type: 'trái cây' },{ emoji: '🍇', type: 'trái cây' }];
+
 const generateCountingQuestion = () => {
   const answer = Math.floor(Math.random() * 10) + 1;
   let category = Math.random() < 0.5 ? FRUITS : ANIMALS;
   let chosenItem = category[Math.floor(Math.random() * category.length)];
-  const { emoji, type } = chosenItem;
-  const questionEmojis = Array(answer).fill(emoji);
-  const questionText = `Có bao nhiêu ${type} trên màn hình?`;
-  return { text: questionText, emojis: questionEmojis, answer: answer, type: 'counting' };
+  return { text: `Có bao nhiêu ${chosenItem.type} trên màn hình?`, emojis: Array(answer).fill(chosenItem.emoji), answer: answer, type: 'counting' };
 };
+
 const generateMathQuestion = () => {
   let num1 = Math.floor(Math.random() * 11), num2 = Math.floor(Math.random() * 11);
   const op = Math.random() < 0.5 ? '+' : '-';
@@ -52,27 +55,27 @@ const generateMathQuestion = () => {
   if (op === '+') {
     if (num1 + num2 > 10) return generateMathQuestion();
     const sum = num1 + num2;
-    const qType = Math.floor(Math.random() * 3);
+    const qType = Math.floor(Math.random() * 3); // Giữ đủ 3 dạng toán cộng
     if (qType === 0) { questionText = `${num1} + ${num2} = ?`; answer = sum; }
     else if (qType === 1) { questionText = `${num1} + ? = ${sum}`; answer = num2; }
     else { questionText = `? + ${num2} = ${sum}`; answer = num1; }
   } else {
     if (num1 < num2) [num1, num2] = [num2, num1];
     const difference = num1 - num2;
-    const qType = Math.floor(Math.random() * 2);
+    const qType = Math.floor(Math.random() * 2); // Giữ đủ 2 dạng toán trừ
     if (qType === 0) { questionText = `${num1} - ${num2} = ?`; answer = difference; }
     else { questionText = `${num1} - ? = ${difference}`; answer = num2; }
   }
   return { text: questionText, emojis: null, answer: answer, type: 'math' };
 };
-const generateNewQuestion = () => {
-  return Math.random() < 0.5 ? generateMathQuestion() : generateCountingQuestion();
-};
 
-// --- (COMPONENT CHÍNH) ---
+const generateNewQuestion = () => Math.random() < 0.5 ? generateMathQuestion() : generateCountingQuestion();
+
+// --- 3. Component Chính ---
 function JackSparrowGame() {
   const navigate = useNavigate();
   const [gameState, setGameState] = useState('lobby'); 
+  const [selectedChar, setSelectedChar] = useState(CHARACTERS[0]); // Nhân vật được chọn
   const [currentMilestoneIndex, setCurrentMilestoneIndex] = useState(0);
   const [questionsAnswered, setQuestionsAnswered] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(null); 
@@ -83,13 +86,12 @@ function JackSparrowGame() {
   const [mapSize, setMapSize] = useState({ width: 0, height: 0 });
   const mapContainerRef = useRef(null); 
 
+  // Logic tính mapSize giữ nguyên
   useEffect(() => {
     const calculateMapSize = () => {
       const availableWidth = window.innerWidth - 340; 
       const availableHeight = window.innerHeight - 100; 
-      const originalWidth = 1000;
-      const originalHeight = 675;
-      const ratio = originalWidth / originalHeight;
+      const ratio = 1000 / 675;
       let newWidth = availableWidth;
       let newHeight = newWidth / ratio;
       if (newHeight > availableHeight) {
@@ -103,12 +105,6 @@ function JackSparrowGame() {
     return () => window.removeEventListener('resize', calculateMapSize);
   }, []);
 
-  const saveGame = async (finalScore, trophy) => {
-    try {
-      await api.post('/game/save', { gameType: 'Jack Sparrow', score: finalScore, trophy });
-    } catch (err) { console.error('Lỗi khi lưu điểm:', err); }
-  };
-
   const handleStartGame = () => {
     setCurrentMilestoneIndex(0);
     const ratio = mapSize.width / 1000; 
@@ -118,181 +114,127 @@ function JackSparrowGame() {
     setGameState('playing');
     setShowStartMessage(true);
     setCurrentQuestion(null); 
-    setFeedback('');           
+    setFeedback(''); 
     setTimeout(() => {
       setShowStartMessage(false);
       setCurrentQuestion(generateNewQuestion());
-      setFeedback('Mốc 1: Giúp Jack Sparrow lấy tàu!');
+      setFeedback('Mốc 1: Bắt đầu hành trình!');
     }, 3000); 
   };
-  
-  const handleGoToLobby = () => navigate('/games'); 
 
   const handleAnswer = useCallback((detectedNumber) => {
-    if (isAnswering || gameState !== 'playing') return; 
+    if (isAnswering || gameState !== 'playing' || !currentQuestion) return; 
     setIsAnswering(true);
     const isCorrect = (detectedNumber === currentQuestion.answer);
     setCurrentQuestion(null); 
     const ratio = mapSize.width / 1000; 
 
     if (isCorrect) {
-      setFeedback('Đúng rồi! Jack đang di chuyển...');
-      let nextMilestoneIndex = currentMilestoneIndex;
-      if (currentMilestoneIndex === 9) { // Mốc 10
-        const newAnswerCount = questionsAnswered + 1;
-        setQuestionsAnswered(newAnswerCount);
-        if (newAnswerCount === 3) {
-          nextMilestoneIndex = 10;
-          setFeedback('ĐÚNG CẢ 3 CÂU! Đang đi lấy rương...');
+      setFeedback('Đúng rồi! Đang di chuyển...');
+      let nextIdx = currentMilestoneIndex;
+
+      // Logic mốc 10 cần 3 câu (Giữ nguyên của bạn)
+      if (currentMilestoneIndex === 9) {
+        const newCount = questionsAnswered + 1;
+        setQuestionsAnswered(newCount);
+        if (newCount === 3) {
+          nextIdx = 10;
+          setJackPosition({ x: MILESTONE_COORDS[10].x * ratio, y: MILESTONE_COORDS[10].y * ratio });
           setTimeout(() => setGameState('won'), 2000);
-          saveGame(1, 'Huy hiệu kho báu');
+          // Lưu game với Huy hiệu
+          axios.post('http://localhost:5000/api/game/save', { gameType: 'Jack Sparrow', score: 1, trophy: 'Huy hiệu kho báu' });
         } else {
-          setFeedback(`Đúng! Cần 3 câu, bạn đã xong ${newAnswerCount}/3 câu.`);
-          setTimeout(() => {
-            setCurrentQuestion(generateNewQuestion());
-            setIsAnswering(false);
-          }, 2000);
-          return; 
+          setFeedback(`Đúng! Đã xong ${newCount}/3 câu mốc cuối.`);
+          setTimeout(() => { setCurrentQuestion(generateNewQuestion()); setIsAnswering(false); }, 2000);
+          return;
         }
       } else {
-        nextMilestoneIndex = currentMilestoneIndex + 1;
+        nextIdx = currentMilestoneIndex + 1;
       }
-      setJackPosition({
-        x: MILESTONE_COORDS[nextMilestoneIndex].x * ratio,
-        y: MILESTONE_COORDS[nextMilestoneIndex].y * ratio
-      });
-      setCurrentMilestoneIndex(nextMilestoneIndex);
+
+      setJackPosition({ x: MILESTONE_COORDS[nextIdx].x * ratio, y: MILESTONE_COORDS[nextIdx].y * ratio });
+      setCurrentMilestoneIndex(nextIdx);
       setTimeout(() => {
-        if (gameState === 'playing') {
-          setFeedback(`Đã đến Mốc ${nextMilestoneIndex + 1}. Câu hỏi mới!`);
-          setCurrentQuestion(generateNewQuestion());
-          setIsAnswering(false);
-        }
-      }, 2000); 
+        setFeedback(`Đã đến Mốc ${nextIdx + 1}.`);
+        setCurrentQuestion(generateNewQuestion());
+        setIsAnswering(false);
+      }, 2000);
     } else {
-      setFeedback(`Sai rồi! Đáp án là ${currentQuestion.answer}.`);
-      let returnMilestoneIndex;
-      if (currentMilestoneIndex < 4) { // Mốc 1-4
-        returnMilestoneIndex = 0; // Về Mốc 1
-        setFeedback(`Sai rồi! Quay về Mốc 1!`);
-      } else { // Mốc 5-10
-        returnMilestoneIndex = 4; // Về Mốc 5
-        setFeedback(`Sai rồi! Quay về Mốc 5!`);
-      }
+      // Logic phạt quay về Checkpoint (Giữ nguyên của bạn)
+      const returnIdx = currentMilestoneIndex < 4 ? 0 : 4;
+      setFeedback(currentMilestoneIndex < 4 ? 'Sai rồi! Về Mốc 1!' : 'Sai rồi! Về Mốc 5!');
       setTimeout(() => {
-        setCurrentMilestoneIndex(returnMilestoneIndex);
-        setJackPosition({
-          x: MILESTONE_COORDS[returnMilestoneIndex].x * ratio,
-          y: MILESTONE_COORDS[returnMilestoneIndex].y * ratio
-        });
+        setCurrentMilestoneIndex(returnIdx);
+        setJackPosition({ x: MILESTONE_COORDS[returnIdx].x * ratio, y: MILESTONE_COORDS[returnIdx].y * ratio });
         setQuestionsAnswered(0);
         setCurrentQuestion(generateNewQuestion());
-        setFeedback(`Bạn đã quay về Mốc ${returnMilestoneIndex + 1}.`);
         setIsAnswering(false);
       }, 2500); 
     }
   }, [currentQuestion, questionsAnswered, currentMilestoneIndex, gameState, isAnswering, mapSize.width]);
 
-  // --- (GIAO DIỆN) ---
-  
-  // --- (SỬA LẠI LỖI TRÀN) Màn hình Sảnh chờ ---
+  // --- GIAO DIỆN ---
+
   if (gameState === 'lobby') {
     return (
-      // Div ngoài cùng
       <div style={{
           backgroundImage: `url(${JackSparrowLobbyBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          height: '100vh', // <-- SỬA THÀNH 100vh
-          width: '100vw',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'flex-end', // Căn nút xuống dưới
-          // paddingBottom: '100px', // <-- XÓA DÒNG NÀY
-          boxSizing: 'border-box'
+          backgroundSize: 'cover', backgroundPosition: 'center',
+          height: '100vh', width: '100vw', display: 'flex',
+          flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white'
       }}>
+        <h1 style={{ textShadow: '2px 2px 8px black', fontSize: '3em', marginBottom: '10px' }}>CHỌN NHÂN VẬT</h1>
         
-        {/* Các nút (Bắt đầu, Quay lại) */}
-        <div style={{ 
-          display: 'flex', 
-          gap: '20px', 
-          zIndex: 10,
-          marginBottom: '100px' // <-- THÊM DÒNG NÀY
-        }}>
-          <button
-            onClick={handleStartGame}
-            style={{
-              padding: '1em 2em',
-              fontSize: '1.2em',
-              backgroundColor: 'green',
-              color: 'white',
-              border: 'none',
-              borderRadius: '15px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            Bắt đầu
-          </button>
-          <button
-            onClick={() => navigate('/games')}
-            style={{
-              padding: '1em 2em',
-              fontSize: '1.2em',
-              backgroundColor: 'red',
-              color: 'white',
-              border: 'none',
-              borderRadius: '15px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 5px 10px rgba(0, 0, 0, 0.3)'
-            }}
-          >
-            Quay lại
-          </button>
+        {/* Khu vực chọn nhân vật mới bổ sung */}
+        <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px', background: 'rgba(0,0,0,0.5)', padding: '20px', borderRadius: '20px' }}>
+          {CHARACTERS.map(char => (
+            <div key={char.id} onClick={() => setSelectedChar(char)} style={{
+                padding: '10px', cursor: 'pointer', textAlign: 'center',
+                border: selectedChar.id === char.id ? '4px solid #4CAF50' : '2px solid transparent',
+                borderRadius: '15px', backgroundColor: selectedChar.id === char.id ? 'rgba(255,255,255,0.2)' : 'transparent'
+            }}>
+              <img src={char.img} alt={char.name} style={{ width: '80px', height: '80px', objectFit: 'contain' }} />
+              <p style={{ margin: '5px 0 0', fontWeight: 'bold' }}>{char.name}</p>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', gap: '20px' }}>
+          <button onClick={handleStartGame} style={{ padding: '1em 3em', fontSize: '1.2em', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Bắt đầu</button>
+          <button onClick={() => navigate('/games')} style={{ padding: '1em 3em', fontSize: '1.2em', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Quay lại</button>
         </div>
       </div>
     );
   }
-  
-  // Màn hình Thắng
+
   if (gameState === 'won') {
-     return (
-      <div className="App"><header className="App-header" style={{backgroundColor: '#B3E5FC'}}>
-        <h1 style={{color: '#282c34'}}>Chúc mừng bạn đã lụm được kho báu - hẹ hẹ</h1>
-        <img src={VICTORY_IMAGE_URL} alt="Thắng!" style={{width: '300px', height: 'auto', margin: '20px'}} />
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <button onClick={() => setGameState('lobby')} style={{ padding: '20px 40px', fontSize: '1.5em', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer' }}>
-            Chơi lại
-          </button>
-          <button onClick={handleGoToLobby} style={{ padding: '20px 40px', fontSize: '1.5em', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer' }}>
-            Thoát
-          </button>
+    return (
+      <div className="App"><header className="App-header" style={{backgroundColor: '#1a1a1a'}}>
+        <h1 style={{color: '#FFD700'}}>BẠN ĐÃ CHIẾN THẮNG KHO BÁU!</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px', margin: '20px' }}>
+            <img src={selectedChar.img} alt="Hero" style={{ width: '150px' }} />
+            <img src={TREASURE_BADGE_URL} alt="Huy hiệu" style={{ width: '150px', animation: 'bounce 1s infinite' }} />
         </div>
+        <img src={VICTORY_IMAGE_URL} alt="Victory" style={{ width: '300px', borderRadius: '20px' }} />
+        <div style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
+          <button onClick={() => setGameState('lobby')} style={{ padding: '15px 40px', fontSize: '1.2em', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer' }}>Chơi lại</button>
+          <button onClick={() => navigate('/games')} style={{ padding: '15px 40px', fontSize: '1.2em', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer' }}>Thoát</button>
+        </div>
+        <style>{`@keyframes bounce { 0%, 100% {transform: translateY(0)} 50% {transform: translateY(-20px)} }`}</style>
       </header></div>
     );
   }
 
-  // Màn hình "Trong Game"
   return (
     <GameLayout onHandDetected={handleAnswer}>
-      <div 
-        ref={mapContainerRef} 
-        style={{
-          position: 'relative', 
-          width: `${mapSize.width}px`, 
-          height: `${mapSize.height}px`, 
-          backgroundImage: `url(${MAP_IMAGE_URL})`,
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
+      <div ref={mapContainerRef} style={{
+          position: 'relative', width: `${mapSize.width}px`, height: `${mapSize.height}px`,
+          backgroundImage: `url(${MAP_IMAGE_URL})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat',
       }}>
-
-        {/* --- Jack Sparrow --- */}
+        {/* Nhân vật chính - Giữ nguyên chính xác CSS transform của bạn */}
         <img 
-          src={PLAYER_IMAGE_URL} 
-          alt="Jack"
+          src={selectedChar.img} 
+          alt="Player"
           style={{
             position: 'absolute',
             width: `${PLAYER_WIDTH}px`,
@@ -305,61 +247,31 @@ function JackSparrowGame() {
           }}
         />
         
-        {/* --- Bong bóng "Bắt đầu" --- */}
         {showStartMessage && (
-          <div style={{
-            position: 'absolute',
-            left: `${jackPosition.x}px`,
-            top: `${jackPosition.y - PLAYER_WIDTH}px`, 
-            transform: 'translateX(-50%)',
-            backgroundColor: 'white', color: 'black',
-            padding: '5px 10px', borderRadius: '5px',
-            border: '1px solid black', zIndex: 20,
-            whiteSpace: 'nowrap'
-          }}>
+          <div style={{ position: 'absolute', left: `${jackPosition.x}px`, top: `${jackPosition.y - PLAYER_WIDTH}px`, transform: 'translateX(-50%)', backgroundColor: 'white', color: 'black', padding: '5px 10px', borderRadius: '5px', border: '1px solid black', zIndex: 20, whiteSpace: 'nowrap' }}>
             Bắt đầu chơi nào!
           </div>
         )}
 
-        {/* --- Khung Câu hỏi --- */}
         {currentQuestion && !showStartMessage && (
           <div style={{
-            position: 'absolute',
-            top: '50%', left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%', 
-            maxWidth: '700px',
-            backgroundColor: 'rgba(40, 44, 52, 0.9)', 
-            padding: '20px', borderRadius: '10px',
-            color: 'white', textAlign: 'center',
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            width: '80%', maxWidth: '700px', backgroundColor: 'rgba(40, 44, 52, 0.9)', 
+            padding: '20px', borderRadius: '10px', color: 'white', textAlign: 'center',
             zIndex: 30, border: '2px solid #61dafb'
           }}>
-            <h2 style={{marginTop: 0}}>Mốc {currentMilestoneIndex + 1} / 10</h2>
-            {currentQuestion.type === 'math' && (
-              <div style={{ fontSize: '3em', fontWeight: 'bold' }}>{currentQuestion.text}</div>
-            )}
-            {currentQuestion.type === 'counting' && (
-              <>
-                <h3>{currentQuestion.text}</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, auto)', justifyContent: 'center', gap: '0.2em', fontSize: '3em' }}>
-                  {currentQuestion.emojis.map((emoji, index) => (<span key={index}>{emoji}</span>))}
-                </div>
-              </>
+            <h2>Mốc {currentMilestoneIndex + 1} / 10</h2>
+            <div style={{ fontSize: '3em', fontWeight: 'bold' }}>{currentQuestion.text}</div>
+            {currentQuestion.emojis && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, auto)', justifyContent: 'center', gap: '0.2em', fontSize: '3em' }}>
+                {currentQuestion.emojis.map((emoji, index) => (<span key={index}>{emoji}</span>))}
+              </div>
             )}
           </div>
         )}
         
-         {/* Feedback */}
         {feedback && !showStartMessage && (
-          <div style={{
-            position: 'absolute',
-            bottom: '10px', left: '50%',
-            transform: 'translateX(-50%)',
-            color: isAnswering ? (feedback.startsWith('Đúng') || feedback.startsWith('Đã đến') ? 'lime' : 'red') : '#61dafb',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            padding: '10px', borderRadius: '5px',
-            fontSize: '1.2em', zIndex: 40
-          }}>
+          <div style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', color: feedback.includes('Sai') ? 'red' : 'lime', backgroundColor: 'rgba(0,0,0,0.7)', padding: '10px', borderRadius: '5px', fontSize: '1.2em', zIndex: 40 }}>
             {feedback}
           </div>
         )}
