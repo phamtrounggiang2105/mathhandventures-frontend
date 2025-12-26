@@ -149,7 +149,6 @@ function PracticeModule() {
     return (
       <div className="App">
         <header className="App-header">
-          <p>Mỗi lượt chơi gồm 10 câu hỏi trong 2 phút. Bạn đã sẵn sàng?</p>
           <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '80px' }}>
             <button 
               onClick={() => handleStartGame(1)} 
