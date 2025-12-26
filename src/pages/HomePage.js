@@ -38,7 +38,7 @@ function HomePage() {
       alignItems: 'center',
       justifyContent: 'flex-start', // Căn từ trên xuống
       overflow: 'hidden',
-      paddingTop: '80px' // Tăng khoảng cách này để dịch toàn bộ cụm xuống thấp hơn (thay vì 80px)
+      paddingTop: '120px' 
     }}>
       {/* Đã xóa bỏ cụm từ MATHANDVENTURES ở đây */}
 
