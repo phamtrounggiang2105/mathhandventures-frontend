@@ -50,7 +50,7 @@ function HomePage() {
         alignItems: 'center',
         width: '100%',
         padding: '0 20px',
-        marginTop: '250px'
+        marginTop: '280px'
       }}>
         {gameButtons.map((game, index) => (
           <button
