@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
+// Đảm bảo file lobby_background.png nằm trong thư mục src/assets/
 import LobbyBackground from '../assets/lobby_background.png';
 
 function HomePage() {
@@ -11,19 +12,16 @@ function HomePage() {
     { 
       title: 'Học toán', 
       path: '/practice', 
-      color: '#4CAF50', 
       img: '/images/Module_hoctap.png' 
     },
     { 
       title: 'Đếm số', 
       path: '/games/counting', 
-      color: '#2196F3', 
       img: '/images/module_game.png' 
     },
     { 
       title: 'Tìm kho báu', 
       path: '/games/jacksparrow', 
-      color: '#FF9800', 
       img: '/images/game_kho_bau.png' 
     }
   ];
@@ -38,22 +36,16 @@ function HomePage() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
-      overflow: 'hidden'
+      justifyContent: 'flex-start', // Căn từ trên xuống
+      overflow: 'hidden',
+      paddingTop: '180px' // Tăng khoảng cách này để dịch toàn bộ cụm xuống thấp hơn (thay vì 80px)
     }}>
-      <h1 style={{ 
-        fontSize: '4em', 
-        color: 'white', 
-        textShadow: '4px 4px 8px rgba(0,0,0,0.7)', 
-        marginBottom: '40px',
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        
-      </h1>
+      {/* Đã xóa bỏ cụm từ MATHANDVENTURES ở đây */}
 
+      {/* Container chứa 3 ứng dụng */}
       <div style={{ 
         display: 'flex', 
-        gap: '30px', 
+        gap: '60px', // Tăng khoảng cách giữa các ứng dụng một chút cho thoáng
         justifyContent: 'center', 
         alignItems: 'center',
         width: '100%',
@@ -64,49 +56,47 @@ function HomePage() {
             key={index}
             onClick={() => navigate(game.path)}
             style={{
-              width: '240px', // Đã thu nhỏ (từ 280px)
-              height: '320px', // Đã thu nhỏ (từ 350px)
-              backgroundColor: game.color,
-              color: 'white',
-              border: '6px solid white',
-              borderRadius: '25px',
+              background: 'none', // Không có nền màu
+              border: 'none',     // Không có viền
               cursor: 'pointer',
-              fontSize: '1.8em',
-              fontWeight: 'bold',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              transition: 'all 0.3s ease',
-              boxShadow: '0 12px 20px rgba(0,0,0,0.4)',
+              transition: 'transform 0.3s ease',
               outline: 'none',
-              padding: '10px'
+              width: '260px' 
             }}
             onMouseOver={(e) => {
-              e.currentTarget.style.transform = 'scale(1.05)';
-              e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5)';
+              e.currentTarget.style.transform = 'scale(1.1)';
             }}
             onMouseOut={(e) => {
               e.currentTarget.style.transform = 'scale(1)';
-              e.currentTarget.style.boxShadow = '0 12px 20px rgba(0,0,0,0.4)';
             }}
           >
-            {/* Hiển thị ảnh module thay cho icon */}
+            {/* Ảnh đại diện cho ứng dụng - Lấy từ public/images */}
             <img 
               src={game.img} 
               alt={game.title}
               style={{
-                width: '80%',
+                width: '100%', 
                 height: 'auto',
                 marginBottom: '15px',
-                borderRadius: '10px',
-                objectFit: 'contain'
+                borderRadius: '15px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.4))' // Hiệu ứng bóng đổ đậm hơn một chút
               }}
-              // Nếu ảnh bị lỗi đường dẫn, hiện icon mặc định
-              onError={(e) => { e.target.style.display = 'none'; }}
             />
             
-            <div style={{ textAlign: 'center' }}>
+            {/* Tên ứng dụng nằm bên dưới ảnh */}
+            <div style={{ 
+              textAlign: 'center',
+              fontSize: '2.2em',
+              fontWeight: 'bold',
+              color: 'white',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.9)',
+              marginTop: '10px'
+            }}>
               {game.title}
             </div>
           </button>
