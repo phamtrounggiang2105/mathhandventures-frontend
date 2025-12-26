@@ -29,14 +29,14 @@ const MILESTONE_COORDS = [
   { x: 617, y: 56 },  { x: 466, y: 145 },
 ];
 
-const api = axios.create({ baseURL: 'http://localhost:5000/api' });
+const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) config.headers['x-auth-token'] = token;
   return config;
 });
 
-// --- 2. Logic Sinh câu hỏi (Giữ nguyên các dạng toán phức tạp của bạn) ---
+// --- 2. Logic Sinh câu hỏi ---
 const ANIMALS = [{ emoji: '🐶', type: 'con vật' },{ emoji: '🐱', type: 'con vật' },{ emoji: '🐭', type: 'con vật' },{ emoji: '🐰', type: 'con vật' }];
 const FRUITS = [{ emoji: '🍎', type: 'trái cây' },{ emoji: '🍌', type: 'trái cây' },{ emoji: '🍊', type: 'trái cây' },{ emoji: '🍇', type: 'trái cây' }];
 
@@ -119,10 +119,24 @@ function JackSparrowGame() {
     }, 2500); 
   };
 
-  // CẬP NHẬT: Hàm thoát về Sảnh chính (Root /)
   const handleExitToMainLobby = () => navigate('/'); 
 
-  const handleAnswer = useCallback((detectedNumber) => {
+  // --- CẬP NHẬT: Hàm lưu kết quả có kèm ảnh Huy hiệu ---
+  const saveGameResult = async () => {
+    try {
+      await api.post('/game/save', { 
+        gameType: 'Jack Sparrow', 
+        score: 1, 
+        trophy: 'Huy hiệu kho báu',
+        trophyImg: TREASURE_BADGE_URL // Gửi thêm đường dẫn ảnh để Backend lưu
+      });
+      console.log("Đã lưu kết quả và huy hiệu thành công!");
+    } catch (err) {
+      console.error("Lỗi khi lưu kết quả:", err);
+    }
+  };
+
+  const handleAnswer = useCallback(async (detectedNumber) => { // Thêm async ở đây
     if (isAnswering || gameState !== 'playing' || !currentQuestion) return; 
     setIsAnswering(true);
     const isCorrect = (detectedNumber === currentQuestion.answer);
@@ -139,8 +153,11 @@ function JackSparrowGame() {
         if (newCount === 3) {
           nextIdx = 10;
           setJackPosition({ x: MILESTONE_COORDS[10].x * ratio, y: MILESTONE_COORDS[10].y * ratio });
+          
+          // GỌI HÀM LƯU TẠI ĐÂY
+          await saveGameResult(); 
+          
           setTimeout(() => setGameState('won'), 2000);
-          api.post('/game/save', { gameType: 'Jack Sparrow', score: 1, trophy: 'Huy hiệu kho báu' });
         } else {
           setFeedback(`Đúng! (${newCount}/3 câu cuối)`);
           setTimeout(() => { setCurrentQuestion(generateNewQuestion()); setIsAnswering(false); }, 1500);
@@ -170,8 +187,7 @@ function JackSparrowGame() {
     }
   }, [currentQuestion, questionsAnswered, currentMilestoneIndex, gameState, isAnswering, mapSize.width]);
 
-  // --- GIAO DIỆN ---
-
+  // --- GIAO DIỆN (Giữ nguyên phần render của bạn) ---
   if (gameState === 'lobby') {
     return (
       <div style={{
@@ -181,7 +197,6 @@ function JackSparrowGame() {
           flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white'
       }}>
         <h1 style={{ textShadow: '2px 2px 10px black', fontSize: '3.2em', marginBottom: '20px' }}>CHỌN NHÂN VẬT</h1>
-        
         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '40px', background: 'rgba(0,0,0,0.6)', padding: '20px', borderRadius: '25px' }}>
           {CHARACTERS.map(char => (
             <div key={char.id} onClick={() => setSelectedChar(char)} style={{
@@ -194,10 +209,8 @@ function JackSparrowGame() {
             </div>
           ))}
         </div>
-
         <div style={{ display: 'flex', gap: '20px' }}>
           <button onClick={handleStartGame} style={{ padding: '1em 3em', fontSize: '1.2em', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>BẮT ĐẦU</button>
-          {/* CẬP NHẬT: Nút quay lại sảnh chính */}
           <button onClick={handleExitToMainLobby} style={{ padding: '1em 3em', fontSize: '1.2em', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>QUAY LẠI</button>
         </div>
       </div>
@@ -218,7 +231,6 @@ function JackSparrowGame() {
         <img src={VICTORY_IMAGE_URL} alt="Victory" style={{ width: '320px', borderRadius: '20px', border: '3px solid gold' }} />
         <div style={{ display: 'flex', gap: '20px', marginTop: '30px' }}>
           <button onClick={() => setGameState('lobby')} style={{ padding: '15px 40px', fontSize: '1.2em', backgroundColor: 'green', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Chơi lại</button>
-          {/* CẬP NHẬT: Thoát về sảnh chính từ màn hình thắng */}
           <button onClick={handleExitToMainLobby} style={{ padding: '15px 40px', fontSize: '1.2em', backgroundColor: 'red', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Thoát</button>
         </div>
         <style>{`@keyframes bounce { 0%, 100% {transform: translateY(0)} 50% {transform: translateY(-20px)} }`}</style>
@@ -232,7 +244,6 @@ function JackSparrowGame() {
           position: 'relative', width: `${mapSize.width}px`, height: `${mapSize.height}px`,
           backgroundImage: `url(${MAP_IMAGE_URL})`, backgroundSize: 'contain', backgroundRepeat: 'no-repeat',
       }}>
-        {/* Nhân vật di chuyển - Giữ nguyên logic tọa độ của bạn */}
         <img 
           src={selectedChar.img} 
           alt="Player"
@@ -243,13 +254,11 @@ function JackSparrowGame() {
             transition: 'all 1.5s ease-in-out', zIndex: 10,
           }}
         />
-        
         {showStartMessage && (
           <div style={{ position: 'absolute', left: `${jackPosition.x}px`, top: `${jackPosition.y - 50}px`, transform: 'translateX(-50%)', backgroundColor: 'white', padding: '5px 15px', borderRadius: '10px', border: '2px solid black', zIndex: 20, fontWeight: 'bold' }}>
             Lên đường tìm kho báu!
           </div>
         )}
-
         {currentQuestion && !showStartMessage && (
           <div style={{
             position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -267,8 +276,6 @@ function JackSparrowGame() {
             {feedback && <div style={{marginTop: '20px', fontSize: '1.5em', color: feedback.includes('Sai') ? '#ff4d4d' : '#00ff00', fontWeight: 'bold'}}>{feedback}</div>}
           </div>
         )}
-        
-        {/* Nút thoát nhanh ra sảnh chính trong khi chơi */}
         <button 
           onClick={handleExitToMainLobby}
           style={{ position: 'absolute', top: '10px', right: '10px', padding: '10px 20px', backgroundColor: 'rgba(255,0,0,0.7)', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', zIndex: 100, fontWeight: 'bold' }}
