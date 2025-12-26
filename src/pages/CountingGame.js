@@ -5,6 +5,7 @@ import '../App.css';
 import HandInput from '../components/HandInput'; 
 
 // --- 1. Cấu hình tài nguyên & API ---
+// Đảm bảo file ảnh này tồn tại trong public/images/
 const BACKGROUND_IMAGE_URL = '/images/practice_background.jpg';
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
 
@@ -113,18 +114,17 @@ function CountingGame() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Game Đếm Số</h1>
           <p>Đếm đúng 10 câu trong 2 phút. Sẵn sàng chưa?</p>
-          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '50px' }}>
             <button onClick={handleStartGame} style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#4CAF50', color: 'white', borderRadius: '15px', cursor: 'pointer', border: 'none' }}>Sẵn sàng</button>
-            <button onClick={() => navigate('/')} style={{ padding: '10px', backgroundColor: '#666', color: 'white', borderRadius: '10px', cursor: 'pointer', border: 'none' }}>Quay lại sảnh chính</button>
+            <button onClick={() => navigate('/')} style={{ padding: '10px', backgroundColor: '#f43307ff', color: 'white', borderRadius: '10px', cursor: 'pointer', border: 'none' }}>Quay lại sảnh chính</button>
           </div>
         </header>
       </div>
     );
   }
 
-  // --- 6. Giao diện Trong Game (Đã bỏ GameLayout) ---
+  // --- 6. Giao diện Trong Game ---
   return (
     <div style={{ 
       backgroundImage: `url('${BACKGROUND_IMAGE_URL}')`, 
@@ -145,22 +145,22 @@ function CountingGame() {
         ⏳ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
       </div>
 
-      {/* Webcam AI (Sử dụng trực tiếp HandInput như Học toán) */}
+      {/* Webcam AI */}
       {gameState === 'playing' && (
         <HandInput isSmall={true} onHandDetected={handleAnswer} />
       )}
 
       {gameState === 'playing' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <h2 style={{ fontSize: '2em', marginBottom: '10px' }}>Câu {questionCount}/10</h2>
           {currentQuestion && (
+            // --- KHUNG CHỨA CÂU HỎI (Đã bỏ viền) ---
             <div style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.7)', 
               padding: '20px 40px',
               borderRadius: '25px',
-              textAlign: 'center', 
-              margin: '20px auto', 
-              boxShadow: '0 10px 20px rgba(0,0,0,0.2)'
+              textAlign: 'center',
+              margin: '20px auto',
+              boxShadow: '0 10px 20px rgba(0,0,0,0.2)' // Giữ lại bóng đổ nhẹ cho đẹp
             }}>
               <h3 style={{fontSize: '2.5em', marginTop: 0}}>{currentQuestion.text}</h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, auto)', justifyContent: 'center', gap: '15px', fontSize: '6em' }}>
