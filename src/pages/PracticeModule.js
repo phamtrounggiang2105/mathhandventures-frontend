@@ -149,20 +149,19 @@ function PracticeModule() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Học Toán Cùng AI</h1>
           <p>Mỗi lượt chơi gồm 10 câu hỏi trong 2 phút. Bạn đã sẵn sàng?</p>
           <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
             <button 
               onClick={() => handleStartGame(1)} 
               style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}
             >
-              Mức 1: Cộng và trừ 0 - 5
+              Cộng và trừ 0 - 5
             </button>
             <button 
               onClick={() => handleStartGame(2)} 
               style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}
             >
-              Mức 2: Cộng và trừ 5 - 10
+              Cộng và trừ 5 - 10
             </button>
             <button 
               onClick={() => navigate('/')} 
