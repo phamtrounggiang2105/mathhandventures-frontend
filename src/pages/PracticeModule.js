@@ -150,7 +150,7 @@ function PracticeModule() {
       <div className="App">
         <header className="App-header">
           <p>Mỗi lượt chơi gồm 10 câu hỏi trong 2 phút. Bạn đã sẵn sàng?</p>
-          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', gap: '20px', flexDirection: 'column', marginTop: '80px' }}>
             <button 
               onClick={() => handleStartGame(1)} 
               style={{ padding: '20px 40px', fontSize: '1.4em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}
