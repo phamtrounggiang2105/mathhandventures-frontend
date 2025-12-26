@@ -186,6 +186,7 @@ function ProfilePage() {
               <div key={result._id} style={{
                 display: 'flex',
                 justifyContent: 'space-between',
+                alignItems: 'center', // Căn giữa theo chiều dọc
                 padding: '10px',
                 backgroundColor: 'rgba(255,255,255,0.7)',
                 borderRadius: '5px',
@@ -199,11 +200,18 @@ function ProfilePage() {
                   {new Date(result.createdAt).toLocaleString('vi-VN')}
                 </span>
                 
-                {/* Hiển thị điểm hoặc huy hiệu */}
+                {/* HIỂN THỊ ĐIỂM HOẶC HUY HIỆU KÈM ẢNH */}
                 {result.gameType === 'Jack Sparrow' ? (
-                  <span style={{color: 'green', fontWeight: 'bold'}}>
-                    {result.trophy}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <img 
+                      src="/Huy_hieu/Huy_hieu_kho_bau.png" 
+                      alt="Huy hiệu" 
+                      style={{ width: '35px', height: 'auto' }} 
+                    />
+                    <span style={{color: 'green', fontWeight: 'bold'}}>
+                      {result.trophy}
+                    </span>
+                  </div>
                 ) : (
                   <span style={{color: '#0d47a1', fontWeight: 'bold'}}>
                     {result.score} điểm
