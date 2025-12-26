@@ -19,7 +19,9 @@ const CHARACTERS = [
   { id: 'ngo_khong', name: 'Ngộ Không', img: '/nhan_vat_game/ngo_khong.png' },
   { id: 'pikachu', name: 'Pikachu', img: '/nhan_vat_game/pikachu.png' },
   { id: 'doraemon', name: 'Doraemon', img: '/nhan_vat_game/doraemon.png' },
-  { id: 'tuan_loc', name: 'Tuần Lộc', img: '/nhan_vat_game/tuan%20loc.png' },
+  { id: 'tuan_loc', name: 'Tuần Lộc', img: '/nhan_vat_game/Tuan_loc.png' },
+  { id: 'batman', name: 'Batman', img: '/nhan_vat_game/Batman.png' },
+  { id: 'naruto', name: 'Naruto', img: '/nhan_vat_game/Naruto.png' },
 ];
 
 const MILESTONE_COORDS = [
