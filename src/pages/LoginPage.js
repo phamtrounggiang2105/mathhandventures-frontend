@@ -74,7 +74,7 @@ function LoginPage() {
           </button>
         </form>
         <p style={{ marginTop: '20px', fontSize: '0.8em' }}>
-          Chưa có tài khoản? <Link to="/register" style={{ color: '#61dafb' }}>Đăng ký ngay</Link>
+          Chưa có tài khoản? <Link to="/register" style={{ color: '#e62d26ff' }}>Đăng ký ngay</Link>
         </p>
       </header>
     </div>
