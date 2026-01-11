@@ -11,13 +11,13 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// --- CẬP NHẬT LOGIC: Thêm tham số type để phân loại phép tính ---
+// CẬP NHẬT LOGIC: Thêm tham số type để phân loại phép tính 
 const generateQuestion = (level, type) => {
   const isLevel1 = (level === 1);
   const minResult = isLevel1 ? 0 : 5; // Mức 2 bắt đầu từ 5 để bao quát 5-10
   const maxResult = isLevel1 ? 5 : 10;
   
-  // Xác định phép tính: 'plus', 'minus' hoặc 'both'
+  
   let op;
   if (type === 'plus') op = '+';
   else if (type === 'minus') op = '-';
@@ -124,7 +124,7 @@ function PracticeModule() {
     } else {
       setTimeout(() => {
         setQuestionCount(prev => prev + 1);
-        setCurrentQuestion(generateQuestion(level, mode)); // Sử dụng mode hiện tại
+        setCurrentQuestion(generateQuestion(level, mode)); 
         setIsAnswering(false);
         setFeedback('');
       }, 2000);
@@ -136,14 +136,14 @@ function PracticeModule() {
       <div className="App"><header className="App-header">
         {/* CẬP NHẬT: Hiển thị 6 nút chọn chế độ chơi */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginTop: '50px', maxWidth: '800px' }}>
-          <button onClick={() => handleStartGame(1, 'both')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng và trừ 0 - 5</button>
-          <button onClick={() => handleStartGame(2, 'both')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng và trừ 5 - 10</button>
+          <button onClick={() => handleStartGame(1, 'both')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng và trừ 0 - 5 🐣</button>
+          <button onClick={() => handleStartGame(2, 'both')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng và trừ 5 - 10 🦁</button>
           
-          <button onClick={() => handleStartGame(1, 'plus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#FF9800', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng 0 - 5 ➕</button>
-          <button onClick={() => handleStartGame(2, 'plus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#FF5722', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng 5 - 10 ➕</button>
+          <button onClick={() => handleStartGame(1, 'plus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#FF9800', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng 0 - 5 🚀</button>
+          <button onClick={() => handleStartGame(2, 'plus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#FF5722', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Cộng 5 - 10 🚀</button>
           
-          <button onClick={() => handleStartGame(1, 'minus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#9C27B0', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Trừ 0 - 5 ➖</button>
-          <button onClick={() => handleStartGame(2, 'minus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#673AB7', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Trừ 5 - 10 ➖</button>
+          <button onClick={() => handleStartGame(1, 'minus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#9C27B0', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Trừ 0 - 5  🎈</button>
+          <button onClick={() => handleStartGame(2, 'minus')} style={{ padding: '15px 25px', fontSize: '1.2em', backgroundColor: '#673AB7', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer' }}>Trừ 5 - 10 🎈</button>
           
           <button onClick={() => navigate('/')} style={{ gridColumn: 'span 2', padding: '10px', backgroundColor: '#666', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer' }}>Quay lại sảnh chính</button>
         </div>
