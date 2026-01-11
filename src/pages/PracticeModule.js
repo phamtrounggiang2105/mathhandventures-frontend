@@ -5,7 +5,7 @@ import '../App.css';
 import HandInput from '../components/HandInput'; 
 
 // --- 1. Cấu hình tài nguyên & API ---
-// ĐỔI TẠI ĐÂY: Sử dụng ảnh nền sảnh chính (main_background) cho đồng bộ
+// Đảm bảo file này là ảnh sảnh chính của bạn (hình chú thỏ)
 const MAIN_LOBBY_BG = '/assets/lobby_background.png'; 
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
 
@@ -33,7 +33,6 @@ const generateQuestion = (level, type) => {
     let n1 = Math.floor(Math.random() * (maxRange + 1));
     let n2 = Math.floor(Math.random() * (maxRange + 1));
     if (n1 + n2 < minRange || n1 + n2 > maxRange) return generateQuestion(level, type);
-    
     const sum = n1 + n2;
     const qType = Math.floor(Math.random() * 3); 
     if (qType === 0) { questionText = `${n1} + ${n2} = ?`; answer = sum; }
@@ -45,7 +44,6 @@ const generateQuestion = (level, type) => {
     if (n1 < n2) [n1, n2] = [n2, n1]; 
     const diff = n1 - n2;
     if (n1 < minRange || n1 > maxRange) return generateQuestion(level, type);
-
     const qType = Math.floor(Math.random() * 2); 
     if (qType === 0) { questionText = `${n1} - ${n2} = ?`; answer = diff; }
     else { questionText = `${n1} - ? = ${diff}`; answer = n2; }
@@ -55,7 +53,6 @@ const generateQuestion = (level, type) => {
 
 function PracticeModule() {
   const navigate = useNavigate();
-  
   const [gameState, setGameState] = useState('lobby'); 
   const [level, setLevel] = useState(null);
   const [gameType, setGameType] = useState('both');
@@ -125,75 +122,78 @@ function PracticeModule() {
     }
   }, [currentQuestion, questionCount, currentScore, gameState, isAnswering, level, gameType]);
 
-  // --- GIAO DIỆN SẢNH (Dùng nền sảnh chính) ---
+  // --- STYLE CHUNG ĐỂ XÓA LỖI MÀU TRẮNG ---
+  const containerStyle = {
+    width: '100vw',
+    minHeight: '100vh',
+    backgroundImage: `url('${MAIN_LOBBY_BG}')`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundAttachment: 'fixed',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    margin: 0,
+    padding: 0
+  };
+
+  // --- GIAO DIỆN SẢNH (LOBBY) ---
   if (gameState === 'lobby') {
     return (
-      <div className="App" style={{
-        backgroundImage: `url('${MAIN_LOBBY_BG}')`,
-        backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '100vh',
-        display: 'flex', flexDirection: 'column', alignItems: 'center'
-      }}>
-        <img src="/images/mathhand_logo.png" alt="Logo" style={{ width: '280px', marginTop: '40px' }} />
+      <div style={containerStyle}>
+        <img src="/images/mathhand_logo.png" alt="Logo" style={{ width: '250px', marginTop: '40px' }} />
         
+        {/* Khung chứa các nút bấm - Màu trắng mờ (rgba) để hiện nền bên dưới */}
         <div style={{ 
           display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', 
-          backgroundColor: 'rgba(255,255,255,0.6)', padding: '40px', borderRadius: '30px',
-          maxWidth: '850px', width: '90%', marginTop: '30px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+          backgroundColor: 'rgba(255,255,255,0.4)', padding: '30px', borderRadius: '30px',
+          maxWidth: '850px', width: '90%', marginTop: '30px', boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
         }}>
-          {/* Nhóm Hỗn hợp */}
-          <button onClick={() => handleStartGame(1, 'both')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng và trừ 0 - 5</button>
-          <button onClick={() => handleStartGame(2, 'both')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng và trừ 5 - 10</button>
-
-          {/* Nhóm Cộng */}
-          <button onClick={() => handleStartGame(1, 'plus')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#FF9800', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng 0 - 5 ➕</button>
-          <button onClick={() => handleStartGame(2, 'plus')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#FF5722', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng 5 - 10 ➕</button>
-
-          {/* Nhóm Trừ */}
-          <button onClick={() => handleStartGame(1, 'minus')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#9C27B0', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Trừ 0 - 5 ➖</button>
-          <button onClick={() => handleStartGame(2, 'minus')} style={{ padding: '18px', fontSize: '1.3em', backgroundColor: '#673AB7', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Trừ 5 - 10 ➖</button>
+          <button onClick={() => handleStartGame(1, 'both')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#4CAF50', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng và trừ 0 - 5</button>
+          <button onClick={() => handleStartGame(2, 'both')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#2196F3', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng và trừ 5 - 10</button>
+          <button onClick={() => handleStartGame(1, 'plus')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#FF9800', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng 0 - 5 ➕</button>
+          <button onClick={() => handleStartGame(2, 'plus')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#FF5722', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Cộng 5 - 10 ➕</button>
+          <button onClick={() => handleStartGame(1, 'minus')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#9C27B0', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Trừ 0 - 5 ➖</button>
+          <button onClick={() => handleStartGame(2, 'minus')} style={{ padding: '15px', fontSize: '1.2em', backgroundColor: '#673AB7', color: 'white', border: 'none', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold' }}>Trừ 5 - 10 ➖</button>
         </div>
 
-        <button onClick={() => navigate('/')} style={{ marginTop: '30px', padding: '12px 40px', backgroundColor: '#666', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold' }}>Quay lại sảnh chính</button>
+        <button onClick={() => navigate('/')} style={{ marginTop: '30px', padding: '12px 40px', backgroundColor: '#555', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 'bold' }}>Quay lại sảnh chính</button>
       </div>
     );
   }
 
-  // --- GIAO DIỆN TRONG GAME (Cũng dùng nền sảnh chính) ---
+  // --- GIAO DIỆN TRONG GAME ---
   return (
-    <div style={{ 
-        width: '100vw', height: '100vh', 
-        backgroundImage: `url('${MAIN_LOBBY_BG}')`, 
-        backgroundSize: 'cover', backgroundPosition: 'center', 
-        position: 'relative', display: 'flex', flexDirection: 'column', 
-        justifyContent: 'flex-start', alignItems: 'center', paddingTop: '10vh' 
-    }}>
+    <div style={containerStyle}>
       <button onClick={() => setGameState('lobby')} style={{ position: 'absolute', top: '20px', right: '20px', backgroundColor: '#ff4d4d', color: 'white', border: 'none', borderRadius: '5px', padding: '10px 15px', fontWeight: 'bold', cursor: 'pointer', zIndex: 201 }}>Thoát</button>
       
-      <div style={{ position: 'absolute', top: '20px', left: '20px', backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '10px 25px', borderRadius: '20px', fontSize: '2em', fontWeight: 'bold', color: timeLeft <= 15 ? 'red' : 'black', boxShadow: '0 4px 8px rgba(0,0,0,0.2)' }}>⏳ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</div>
+      <div style={{ position: 'absolute', top: '20px', left: '20px', backgroundColor: 'rgba(255, 255, 255, 0.9)', padding: '10px 25px', borderRadius: '20px', fontSize: '2em', fontWeight: 'bold', color: timeLeft <= 15 ? 'red' : 'black' }}>⏳ {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</div>
       
-      {gameState === 'playing' && <HandInput isSmall={true} onHandDetected={handleAnswer} />}
-      
-      {gameState === 'playing' && (
-        <>
-          <h2 style={{ fontSize: '2.2em', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Câu {questionCount}/10</h2>
-          {currentQuestion && (
-            <div style={{ fontSize: '7em', fontWeight: 'bold', margin: '20px 0', backgroundColor: 'rgba(255,255,255,0.85)', padding: '20px 70px', borderRadius: '30px', color: '#0d47a1', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
-              {currentQuestion.text}
-            </div>
-          )}
-          <h2 style={{ fontSize: '2.5em', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Điểm: {currentScore}</h2>
-          {feedback && <h3 style={{ fontSize: '2.2em', color: feedback.includes('Đúng') ? '#2e7d32' : '#c62828', backgroundColor: 'white', padding: '8px 30px', borderRadius: '15px', border: '3px solid #ccc' }}>{feedback}</h3>}
-        </>
-      )}
+      <div style={{ marginTop: '8vh', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {gameState === 'playing' && <HandInput isSmall={true} onHandDetected={handleAnswer} />}
+        
+        {gameState === 'playing' && (
+          <>
+            <h2 style={{ fontSize: '2.2em', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)', marginTop: '20px' }}>Câu {questionCount}/10</h2>
+            {currentQuestion && (
+              <div style={{ fontSize: '7em', fontWeight: 'bold', margin: '20px 0', backgroundColor: 'rgba(255,255,255,0.8)', padding: '20px 70px', borderRadius: '30px', color: '#0d47a1' }}>
+                {currentQuestion.text}
+              </div>
+            )}
+            <h2 style={{ fontSize: '2.5em', color: 'white', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>Điểm: {currentScore}</h2>
+            {feedback && <h3 style={{ fontSize: '2em', color: feedback.includes('Đúng') ? '#2e7d32' : '#c62828', backgroundColor: 'white', padding: '10px 30px', borderRadius: '15px' }}>{feedback}</h3>}
+          </>
+        )}
 
-      {gameState === 'ended' && (
-        <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '50px', borderRadius: '40px', textAlign: 'center', marginTop: '5vh', boxShadow: '0 15px 40px rgba(0,0,0,0.3)' }}>
-          <h1 style={{ fontSize: '3.5em', color: '#0d47a1' }}>{timeLeft === 0 ? 'HẾT GIỜ!' : 'HOÀN THÀNH!'}</h1>
-          <img src={VICTORY_IMAGE_URL} alt="Victory" style={{ width: '300px', borderRadius: '25px', margin: '20px 0' }} />
-          <h2 style={{ fontSize: '3.2em', marginBottom: '30px' }}>Bạn đạt: {currentScore}/10 điểm</h2>
-          <button onClick={() => setGameState('lobby')} style={{ padding: '18px 60px', fontSize: '1.6em', backgroundColor: '#4CAF50', color: 'white', borderRadius: '20px', cursor: 'pointer', fontWeight: 'bold', border: 'none' }}>Chơi lại</button>
-        </div>
-      )}
+        {gameState === 'ended' && (
+          <div style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)', padding: '40px', borderRadius: '40px', textAlign: 'center', marginTop: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+            <h1 style={{ fontSize: '3em', color: '#0d47a1' }}>{timeLeft === 0 ? 'HẾT GIỜ!' : 'HOÀN THÀNH!'}</h1>
+            <img src={VICTORY_IMAGE_URL} alt="Victory" style={{ width: '250px', borderRadius: '20px', margin: '20px 0' }} />
+            <h2 style={{ fontSize: '2.5em' }}>Kết quả: {currentScore}/10</h2>
+            <button onClick={() => setGameState('lobby')} style={{ padding: '15px 50px', fontSize: '1.2em', backgroundColor: '#4CAF50', color: 'white', borderRadius: '15px', cursor: 'pointer', fontWeight: 'bold', border: 'none' }}>Chơi lại</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
