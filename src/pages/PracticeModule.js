@@ -6,7 +6,7 @@ import HandInput from '../components/HandInput';
 
 // --- 1. Cấu hình tài nguyên & API ---
 // ĐỔI TẠI ĐÂY: Sử dụng ảnh nền sảnh chính (main_background) cho đồng bộ
-const MAIN_LOBBY_BG = '/images/main_background.jpg'; 
+const MAIN_LOBBY_BG = '/assets/lobby_background.png'; 
 const VICTORY_IMAGE_URL = '/images/victory_minions.jpg';
 
 const api = axios.create({ baseURL: 'https://mathhandventures-backend.onrender.com/api' });
